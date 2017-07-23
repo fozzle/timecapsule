@@ -3,12 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const Multer = require('multer');
 const uuidv4 = require('uuid/v4');
 const storage = require('@google-cloud/storage')({
   projectId: process.env.GCLOUD_PROJECT_ID,
-  keyFilename: process.env.GCLOUD_KEYFILENAME,
+  keyFilename: process.env.GCLOUD_KEYFILE,
 });
 
 const multer = Multer({
@@ -65,11 +65,8 @@ MongoClient.connect(process.env.MONGO_URL, (err, dbHandle) => {
     throw new Error('Failed to connect to MongoDB');
   }
 
-  https.createServer({
-    key: fs.readFileSync(process.env.SSL_KEY_PATH),
-    cert: fs.readFileSync(process.env.SSL_CERT_PATH),
-  }, app).listen(3000, () => {
-    console.log('App started on 3000');
+  http.createServer(app).listen(process.env.PORT, () => {
+    console.log('App started on', process.env.PORT);
   });
 
   db = dbHandle;
