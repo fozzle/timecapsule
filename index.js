@@ -54,8 +54,8 @@ app.post('/upload', multer.single('media'), (req, res, next) => {
 
 
 https.createServer({
-  key: fs.readFileSync('../localhostkeys/server.key'),
-  cert: fs.readFileSync('../localhostkeys/server.crt'),
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH),
 }, app).listen(3000, () => {
   console.log('App started on 3000');
 });
