@@ -6,7 +6,7 @@ const https = require('https');
 const Multer = require('multer');
 const uuidv4 = require('uuid/v4');
 const storage = require('@google-cloud/storage')({
-  projectId: process.env.GCLOUD_KEYFILENAME,
+  projectId: process.env.GCLOUD_PROJECT_ID,
   keyFilename: process.env.GCLOUD_KEYFILENAME,
 });
 
