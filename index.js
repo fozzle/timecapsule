@@ -12,13 +12,13 @@ exports.getSignedURL = function(req, res) {
   cors(req, res, () => {
     // TODO: dont make the filename predictable
     const file = bucket.file(`${Date.now()}-${req.body.sendAt}-${req.body.email}.webm`);
-    file.setMetadata({
-      metadata: {
-        sendAt: req.body.sendAt,
-        email: req.body.email,
-      }
-    })
-      .then(() => file.createResumableUpload())
+    // file.setMetadata({
+    //   metadata: {
+    //     sendAt: req.body.sendAt,
+    //     email: req.body.email,
+    //   }
+    // })
+      Promise.resolve().then(() => file.createResumableUpload())
       .then((data) => res.send({ putURL: data[0] }));
   });
 }
