@@ -18,6 +18,7 @@
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "nodemon": "^1.11.0",
+    "uuid": "^3.1.0",
     "webpack": "^3.2.0",
     "webrtc-adapter": "^4.2.0"
   }
