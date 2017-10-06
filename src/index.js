@@ -18,6 +18,8 @@ async function getMedia() {
   const recordedVideo = document.querySelector('#recordedVideo');
   const recordButton = document.querySelector('#record');
   const uploadButton = document.querySelector('#upload');
+  const emailField = document.querySelector('#email');
+  const sendAtField = document.querySelector('#sendAt');
   const mediaRecorder = new MediaRecorder(stream);
 
   mediaRecorder.addEventListener('dataavailable', (e) => {
@@ -40,25 +42,50 @@ async function getMedia() {
     }
   });
 
-  uploadButton.addEventListener('click', () => {
+  uploadButton.addEventListener('click', async function() {
     const combinedBuffer = new Blob(chunks, { type: 'video/webm' });
 
     const formData = new FormData();
     formData.append('media', combinedBuffer);
 
-    const fetchOptions = {
+    const email = emailField.value;
+    const sendAt = sendAtField.value;
+
+    if (!email || !sendAt) {
+      return console.error('MISSING REQUIRED FIELDS');
+    }
+
+    const initiateFetchOptions = {
       method: 'POST',
-      body: formData,
+      body: JSON.stringify({
+        email,
+        sendAt
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
     };
 
-    fetch('/upload', fetchOptions)
-      .then(() => {
-        console.log('POSTED OK');
-      })
-      .catch((err) => {
-        console.error('ERROR:', err);
-      });
+    const putFetchOptions = {
+      method: 'PUT',
+      body: combinedBuffer,
+      headers: {
+        'Content-Length': combinedBuffer.size,
+        'Content-Type': 'video/webm',
+      },
+    };
 
+    // Get the resumable upload URL first
+    try {
+      const urlResp = await fetch('https://us-central1-timecapsule-174619.cloudfunctions.net/getSignedURL', initiateFetchOptions);
+      const { putURL } = await urlResp.json();
+      console.log('put url', putURL);
+      const putResp = await fetch(putURL, putFetchOptions);
+    } catch (err) {
+      console.error('Error', err);
+    }
+
+    console.log('Finished putting');
   });
 
 

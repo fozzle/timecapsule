@@ -1,4 +1,5 @@
 const storage = require('@google-cloud/storage')();
+const cors = require('cors')({ origin: true });
 const bucket = storage.bucket('timecapsules');
 
 exports.createCapsule = function(event, callback) {
@@ -8,14 +9,16 @@ exports.createCapsule = function(event, callback) {
 };
 
 exports.getSignedURL = function(req, res) {
-  const file = bucket.file(`${Date.now()}.webm`);
-  file.createResumableUpload((err, uri) => {
-    if (err) {
-      console.log('err', err);
-      res.send(err);
-    } else {
-      console.log('uri', uri);
-      res.send(uri);
-    }
+  cors(req, res, () => {
+    // TODO: dont make the filename predictable
+    const file = bucket.file(`${Date.now()}-${req.body.sendAt}-${req.body.email}.webm`);
+    file.setMetadata({
+      metadata: {
+        sendAt: req.body.sendAt,
+        email: req.body.email,
+      }
+    })
+      .then(() => file.createResumableUpload())
+      .then((data) => res.send({ putURL: data[0] }));
   });
 }
