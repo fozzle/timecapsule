@@ -1,7 +1,7 @@
 {
   "name": "timecapsule",
   "version": "1.0.0",
-  "description": "Make videos to your future self",
+  "description": "Make videos for your future self",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
@@ -11,11 +11,12 @@
   "author": "Kyle Petrovich",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^4.0.0",
-    "webrtc-adapter": "^4.2.0",
+    "@google-cloud/storage": "^1.3.1",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
+    "dotenv": "^4.0.0",
     "nodemon": "^1.11.0",
-    "webpack": "^3.2.0"
+    "webpack": "^3.2.0",
+    "webrtc-adapter": "^4.2.0"
   }
 }
