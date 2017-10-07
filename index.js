@@ -1,4 +1,5 @@
 const storage = require('@google-cloud/storage')();
+const datastore = require('@google-cloud/datastore')();
 const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
@@ -6,7 +7,34 @@ const bucket = storage.bucket('timecapsules');
 exports.createCapsule = function(event, callback) {
   console.log('Processing file: ' + event.data.name);
   console.log(event.data);
-  callback();
+
+  const file = event.data;
+
+  // We will only respond to creation events.
+  if (file.metageneration !== '1' && file.resourceState !== 'exists') return callback();
+
+  const capsuleKey = datastore.key('Capsule');
+  const entity = {
+    key: capsuleKey,
+    data: [
+      {
+        name: 'email',
+        value: 'test@test.com',
+      },
+      {
+        name: 'sendAt',
+        value: new Date().toJSON(),
+      },
+      {
+        name: 'filename',
+        value: file.name,
+      }
+    ]
+  }
+
+  datastore.save(entity)
+    .then(() => callback())
+    .catch((err) => console.error('ERROR:', err));
 };
 
 exports.getSignedURL = function(req, res) {
