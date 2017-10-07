@@ -43,8 +43,10 @@ exports.getSignedURL = function(req, res) {
     const file = bucket.file(`${uuid()}.webm`);
     file.createResumableUpload({
       metadata: {
-        sendAt: req.body.sendAt,
-        email: req.body.email,
+        metadata: {
+          sendAt: req.body.sendAt,
+          email: req.body.email,
+        },
         contentType: 'video/webm',
       }
     })
