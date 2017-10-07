@@ -13,31 +13,26 @@ exports.createCapsule = function(event, callback) {
   // We will only respond to creation events.
   if (file.metageneration !== '1' && file.resourceState !== 'exists') return callback();
 
-  file.getMetadata()
-    .then(([metadata]) => {
-      const { sendAt, email } = metadata.metadata;
+  const capsuleKey = datastore.key('Capsule');
+  const entity = {
+    key: capsuleKey,
+    data: [
+      {
+        name: 'email',
+        value: file.metadata.email,
+      },
+      {
+        name: 'sendAt',
+        value: new Date(file.metadata.sendAt).toJSON(),
+      },
+      {
+        name: 'filename',
+        value: file.name,
+      }
+    ]
+  }
 
-      const capsuleKey = datastore.key('Capsule');
-      const entity = {
-        key: capsuleKey,
-        data: [
-          {
-            name: 'email',
-            value: email
-          },
-          {
-            name: 'sendAt',
-            value: new Date(sendAt).toJSON(),
-          },
-          {
-            name: 'filename',
-            value: file.name,
-          }
-        ]
-      };
-
-      return datastore.save(entity);
-    })
+  datastore.save(entity)
     .then(() => callback())
     .catch((err) => console.error('ERROR:', err));
 };
