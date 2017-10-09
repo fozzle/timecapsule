@@ -47,6 +47,7 @@ export default class Recorder extends React.Component {
     } else {
       this.mediaRecorder.stop();
 
+      // need to provide combined buffer to the uploader
       const combinedBuffer = new Blob(this.chunks, { type: 'video/webm' });
       const recordedData = window.URL.createObjectURL(combinedBuffer);
       this.setState({ recordedData, recording: false });
@@ -57,7 +58,33 @@ export default class Recorder extends React.Component {
     const hasRecording = Boolean(this.state.recordedData);
     return (
       <div className="recorder">
-        <button onClick={() => this.toggleRecording()} style={{ border: this.state.recording ? '4px solid red' : '4px solid transparent' }}>
+        <button
+          onClick={() => this.toggleRecording()}
+          style={{
+            border: this.state.recording ? '4px solid red' : '4px solid transparent',
+            position: 'relative',
+          }}
+        >
+          {!hasRecording && !this.state.recording ?
+            <div
+              style={{
+                position: 'absolute',
+                background: 'rgba(0,0,0,0.3)',
+                color: 'white',
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                fontSize: '18px',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <div>Lookin' good? Click to start recording.</div>
+            </div>
+            : null
+          }
           <video
             muted={!hasRecording}
             autoPlay
