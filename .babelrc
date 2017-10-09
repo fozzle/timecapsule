@@ -1,8 +1,9 @@
 {
   "presets": [
+    "react",
     ["env", {
       "targets": {
-        "browsers": ["last 2 versions", "safari >= 7"]
+        "browsers": ["last 2 Chrome versions", "safari >= 7"]
       }
     }]
   ]
