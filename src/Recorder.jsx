@@ -8,6 +8,7 @@ export default class Recorder extends React.Component {
     this.state = {
       recording: false,
       recordedData: null,
+      showUpload: false,
     };
   }
 
@@ -39,11 +40,16 @@ export default class Recorder extends React.Component {
     });
   }
 
+  resetState() {
+    this.setState({ recording: false, recordedData: null, showUpload: false });
+  }
+
   toggleRecording() {
     if (!this.state.recording) {
       this.chunks = [];
       this.mediaRecorder.start(10);
       this.setState({ recordedData: null, recording: true });
+      if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(null);
     } else {
       this.mediaRecorder.stop();
 
@@ -51,49 +57,84 @@ export default class Recorder extends React.Component {
       const combinedBuffer = new Blob(this.chunks, { type: 'video/webm' });
       const recordedData = window.URL.createObjectURL(combinedBuffer);
       this.setState({ recordedData, recording: false });
+      if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(combinedBuffer);
     }
   }
 
   render() {
     const hasRecording = Boolean(this.state.recordedData);
+    /* Overlay shown:
+      1.) Initial load (not recording, no data)
+      2.) hover while recording
+      3.) hover when complete
+      4.) In upload form mode
+    */
+    const showOverlay = (!hasRecording && !this.state.recording) ||
+      (this.state.hovered) ||
+      (this.state.showUpload);
     return (
-      <div className="recorder">
-        <button
-          onClick={() => this.toggleRecording()}
+      <div
+        className="recorder"
+        style={{ height: '80vh', position: 'relative' }}
+        onMouseEnter={() => this.setState({ hovered: true })}
+        onMouseLeave={() => this.setState({ hovered: false })}
+      >
+        {showOverlay ? <div
           style={{
-            border: this.state.recording ? '4px solid red' : '4px solid transparent',
-            position: 'relative',
+            position: 'absolute',
+            background: 'rgba(0,0,0,0.4)',
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
           }}
         >
-          {!hasRecording && !this.state.recording ?
-            <div
-              style={{
-                position: 'absolute',
-                background: 'rgba(0,0,0,0.3)',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                fontSize: '18px',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-            >
-              <div>Lookin' good? Click to start recording.</div>
-            </div>
-            : null
-          }
-          <video
-            muted={!hasRecording}
-            autoPlay
-            controls={hasRecording}
-            loop={hasRecording}
-            ref={x => (this.video = x)}
-            src={this.state.recordedData || this.state.streamSrc}
-          />
-        </button>
+          {/* Initial recording toggle */}
+          {!hasRecording && !this.state.recording ? <button
+            style={{
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              width: '100%',
+              height: '100%',
+              cursor: 'pointer',
+            }}
+            onClick={() => this.toggleRecording()}
+          >
+            Lookin' good? Click to start recording.
+          </button> : null}
+          {/* During recording toggle */}
+          {this.state.recording ? <button
+            style={{
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              width: '100%',
+              height: '100%',
+              cursor: 'pointer',
+            }}
+            onClick={() => this.toggleRecording()}
+          >
+            Stop Recording
+          </button> : null}
+          {/* Recording finished buttons (Reset, Show Upload Form) */}
+          {hasRecording && !this.state.recording ? <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <button style={{ color: 'white' }} onClick={() => this.resetState()}>Reset</button>
+            <button style={{ color: 'white' }}>Upload</button>
+          </div> : null}
+        </div> : null}
+        <video
+          style={{ height: '100%', objectFit: 'initial' }}
+          muted={!hasRecording}
+          autoPlay
+          loop={hasRecording}
+          ref={x => (this.video = x)}
+          src={this.state.recordedData || this.state.streamSrc}
+        />
       </div>
     );
   }
