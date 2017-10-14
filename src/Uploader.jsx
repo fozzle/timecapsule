@@ -1,4 +1,10 @@
 import React from 'react';
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import MButton from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
+import Typography from 'material-ui/Typography';
+import { CircularProgress } from 'material-ui/Progress';
+
 
 const API_URL = 'https://us-central1-timecapsule-174619.cloudfunctions.net/getSignedURL';
 export default class Uploader extends React.Component {
@@ -7,7 +13,7 @@ export default class Uploader extends React.Component {
 
     this.state = {
       email: '',
-      date: '',
+      sendAt: '',
       valid: false,
       uploading: false,
     }
@@ -15,7 +21,7 @@ export default class Uploader extends React.Component {
 
   isValid() {
     // Check to make sure the date and email make sense.
-    const valid = this.state.email.indexOf('@') !== -1 && new Date(this.state.date) > new Date();
+    const valid = this.state.email.indexOf('@') !== -1 && new Date(this.state.sendAt) > new Date();
 
     return this.props.recordedVideo && valid;
   }
@@ -61,43 +67,55 @@ export default class Uploader extends React.Component {
     const date = String(now.getUTCDate()).padStart(2, '0');
     const minSend = `${now.getUTCFullYear()}-${month}-${date}`
     return (
-      <div
-        className="uploader"
-        style={{
-          maxHeight: this.props.recordedVideo ? '1000px' : '0',
-          overflow: 'hidden',
-          transition: 'max-height 0.5s ease',
-          width: '100%',
-          margin: '16px 0',
-        }}
-      >
-        <form style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-          <label>
-            <span style={{ marginRight: '16px' }}>Email</span>
-            <input
+      <Card>
+        <CardHeader title="Seal the Deal!" />
+        <CardContent>
+          <Typography type="body1">Just fill out these two fields to send away your time capsule, or hit reset to clear the video and start over.</Typography>
+          <form style={{ display: 'flex', flexDirection: 'column' }}>
+            <TextField
+              error={Boolean(this.state.email && this.state.email.indexOf('@') === -1)}
+              id="email"
+              label="Email"
               type="email"
-              placeholder="Email"
-              onChange={(e) => this.setState({ email: e.target.value })}
               value={this.state.email}
+              onChange={(e) => this.setState({ email: e.target.value })}
+              margin="normal"
             />
-          </label>
-          <label>
-            <span style={{ marginRight: '16px' }}>Send On Date</span>
-            <input
-              type="date"
-              min={minSend}
-              placeholder="Send on Date"
-              onChange={(e) => this.setState({ date: e.target.value })}
-              value={this.state.date}
+            <TextField
+              id="sendAt"
+              label="Send on Date"
+              placeholder="MM-DD-YYYY"
+              value={this.state.sendAt}
+              onChange={(e) => this.setState({ sendAt: e.target.value })}
+              margin="normal"
             />
-          </label>
-          <div>
-            <button type="button" onClick={() => this.uploadVideo()} disabled={!this.isValid()}>
-              Upload
-            </button>
+          </form>
+        </CardContent>
+        <CardActions>
+          <MButton disabled={this.state.uploading} raised color='primary' onClick={() => this.props.onResetClick()}>
+            <i className="material-icons" style={{ marginRight: '4px' }}>clear</i>Reset
+          </MButton>
+          <div style={{ position: 'relative' }}>
+            <MButton raised color='accent' onClick={() => this.uploadVideo()} disabled={!this.isValid() || this.state.uploading}>
+              <i className="material-icons" style={{ marginRight: '4px'}}>cloud_upload</i>Upload
+            </MButton>
+            {
+              this.state.uploading &&
+              <CircularProgress
+                size={24}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '24px',
+                  height: '24px',
+                  marginTop: -12,
+                  marginLeft: -12,
+                }} />
+            }
           </div>
-        </form>
-      </div>
+        </CardActions>
+      </Card>
     );
   }
 }

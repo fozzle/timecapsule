@@ -4,6 +4,7 @@ const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
 
+// These are all google cloud functions. This repo sort of does double work. I'm not sorry.
 exports.createCapsule = function(event, callback) {
   console.log('Processing file: ' + event.data.name);
   console.log(event.data);

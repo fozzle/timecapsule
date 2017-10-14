@@ -1,5 +1,6 @@
 import 'webrtc-adapter';
 import React from 'react';
+import Uploader from './Uploader';
 
 export default class Recorder extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ export default class Recorder extends React.Component {
     this.state = {
       recording: false,
       recordedData: null,
-      showUpload: false,
+      uploading: false,
+      recordedVideo: null,
     };
   }
 
@@ -41,28 +43,28 @@ export default class Recorder extends React.Component {
   }
 
   resetState() {
-    this.setState({ recording: false, recordedData: null, showUpload: false });
+    this.setState({ recording: false, recordedData: null, recordedVideo: null });
   }
 
   toggleRecording() {
     if (!this.state.recording) {
       this.chunks = [];
       this.mediaRecorder.start(10);
-      this.setState({ recordedData: null, recording: true });
+      this.setState({ recordedData: null, recording: true, recordedVideo: null });
       if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(null);
     } else {
       this.mediaRecorder.stop();
 
       // need to provide combined buffer to the uploader
-      const combinedBuffer = new Blob(this.chunks, { type: 'video/webm' });
-      const recordedData = window.URL.createObjectURL(combinedBuffer);
-      this.setState({ recordedData, recording: false });
-      if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(combinedBuffer);
+      const recordedData = new Blob(this.chunks, { type: 'video/webm' });
+      this.setState({ recordedData, recording: false, recordedVideo: window.URL.createObjectURL(recordedData) });
+      if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(recordedData);
     }
   }
 
   render() {
     const hasRecording = Boolean(this.state.recordedData);
+
     /* Overlay shown:
       1.) Initial load (not recording, no data)
       2.) hover while recording
@@ -70,8 +72,7 @@ export default class Recorder extends React.Component {
       4.) In upload form mode
     */
     const showOverlay = (!hasRecording && !this.state.recording) ||
-      (this.state.hovered) ||
-      (this.state.showUpload);
+      (this.state.hovered);
     return (
       <div
         className="recorder"
@@ -105,6 +106,9 @@ export default class Recorder extends React.Component {
             }}
             onClick={() => this.toggleRecording()}
           >
+            <div>
+              <i className="material-icons md-48">videocam</i>
+            </div>
             Lookin' good? Click to start recording.
           </button> : null}
           {/* During recording toggle */}
@@ -119,12 +123,14 @@ export default class Recorder extends React.Component {
             }}
             onClick={() => this.toggleRecording()}
           >
+            <div>
+              <i className="material-icons md-48">stop</i>
+            </div>
             Stop Recording
           </button> : null}
           {/* Recording finished buttons (Reset, Show Upload Form) */}
           {hasRecording && !this.state.recording ? <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <button style={{ color: 'white' }} onClick={() => this.resetState()}>Reset</button>
-            <button style={{ color: 'white' }}>Upload</button>
+            <Uploader onResetClick={() => this.resetState()} recordedVideo={this.state.recordedData} onUploadingStateChange={(uploading) => this.setState({ uploading })} />
           </div> : null}
         </div> : null}
         <video
@@ -133,7 +139,7 @@ export default class Recorder extends React.Component {
           autoPlay
           loop={hasRecording}
           ref={x => (this.video = x)}
-          src={this.state.recordedData || this.state.streamSrc}
+          src={this.state.recordedVideo || this.state.streamSrc}
         />
       </div>
     );
