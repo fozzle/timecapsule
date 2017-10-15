@@ -68,15 +68,16 @@ export default class Recorder extends React.Component {
     /* Overlay shown:
       1.) Initial load (not recording, no data)
       2.) hover while recording
-      3.) hover when complete
+      3.) hover when complete (display toggle only)
       4.) In upload form mode
     */
     const showOverlay = (!hasRecording && !this.state.recording) ||
-      (this.state.hovered);
+      (this.state.hovered) ||
+      (hasRecording);
     return (
       <div
         className="recorder"
-        style={{ height: '80vh', position: 'relative' }}
+        style={{ position: 'relative' }}
         onMouseEnter={() => this.setState({ hovered: true })}
         onMouseLeave={() => this.setState({ hovered: false })}
       >
@@ -84,7 +85,7 @@ export default class Recorder extends React.Component {
           style={{
             position: 'absolute',
             background: 'rgba(0,0,0,0.4)',
-            display: 'flex',
+            display: (!hasRecording || this.state.hovered) ? 'flex' : 'none',
             justifyContent: 'center',
             flexDirection: 'column',
             top: 0,
@@ -96,6 +97,7 @@ export default class Recorder extends React.Component {
         >
           {/* Initial recording toggle */}
           {!hasRecording && !this.state.recording ? <button
+            className="button button-clear"
             style={{
               color: 'white',
               fontSize: '18px',
@@ -113,6 +115,7 @@ export default class Recorder extends React.Component {
           </button> : null}
           {/* During recording toggle */}
           {this.state.recording ? <button
+            className="button button-clear"
             style={{
               color: 'white',
               fontSize: '18px',
@@ -130,12 +133,16 @@ export default class Recorder extends React.Component {
           </button> : null}
           {/* Recording finished buttons (Reset, Show Upload Form) */}
           {hasRecording && !this.state.recording ? <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <Uploader onResetClick={() => this.resetState()} recordedVideo={this.state.recordedData} onUploadingStateChange={(uploading) => this.setState({ uploading })} />
+            <Uploader
+              onResetClick={() => this.resetState()}
+              recordedVideo={this.state.recordedData}
+              onUploadingStateChange={(uploading) => this.setState({ uploading })}
+            />
           </div> : null}
         </div> : null}
         <video
-          style={{ height: '100%', objectFit: 'initial' }}
-          muted={!hasRecording}
+          style={{ maxHeight: '100%', maxWidth: '100%', width: '100vw', objectFit: 'initial' }}
+          muted={!hasRecording || showOverlay}
           autoPlay
           loop={hasRecording}
           ref={x => (this.video = x)}
