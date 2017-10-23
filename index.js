@@ -43,9 +43,11 @@ exports.createCapsule = function(event, callback) {
 };
 
 exports.unlockAndSendCapsules = function(event, callback) {
-  datastore.createQuery('Capsule')
+  const query = datastore.createQuery('Capsule')
     .filter('sent', '=', false)
-    .filter('sendAt', '<=', new Date())
+    .filter('sendAt', '<=', new Date());
+
+  datastore.runQuery(query)
     .then((data) => {
       console.log('data found', data);
     })
