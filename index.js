@@ -24,7 +24,7 @@ exports.createCapsule = function(event, callback) {
       },
       {
         name: 'sendAt',
-        value: new Date(file.metadata.sendAt).toJSON(),
+        value: new Date(file.metadata.sendAt),
       },
       {
         name: 'filename',
