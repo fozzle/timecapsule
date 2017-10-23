@@ -29,6 +29,10 @@ exports.createCapsule = function(event, callback) {
       {
         name: 'filename',
         value: file.name,
+      },
+      {
+        name: 'sent',
+        value: false,
       }
     ]
   }
@@ -38,12 +42,22 @@ exports.createCapsule = function(event, callback) {
     .catch((err) => console.error('ERROR:', err));
 };
 
+exports.unlockAndSendCapsules = function(event, callback) {
+  datastore.createQuery('Capsule')
+    .filter('sent', '=', false)
+    .filter('sendAt', '<=', new Date())
+    .then((data) => {
+      console.log('data found', data);
+    })
+    .catch((err) => console.error('ERROR:', err));
+}
+
 exports.getSignedURL = function(req, res) {
   cors(req, res, () => {
     // TODO: dont make the filename predictable
     const file = bucket.file(`${uuid()}.webm`);
     file.createResumableUpload({
-      origin: req.headers.origin,  
+      origin: req.headers.origin,
       metadata: {
         metadata: {
           sendAt: req.body.sendAt,

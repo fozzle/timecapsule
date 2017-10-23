@@ -19,11 +19,17 @@ export default class App extends React.Component {
         <h1 style={{ textAlign: 'center', margin: '16px 0' }} component="h1">Video Timecapsule</h1>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
           <Recorder recordedData={this.state.recordedData} onRecordingStateChange={(recordedData) => this.setState({ recordedData })} />
-          {this.state.recordedData ? <Uploader
+          {this.state.recordedData && this.state.uploading !== 'uploaded' ? <Uploader
             onResetClick={() => this.reset()}
             recordedVideo={this.state.recordedData}
             onUploadingStateChange={(uploading) => this.setState({ uploading })}
           /> : null}
+          {this.state.uploading === 'uploaded' ? <div style={{textAlign: 'center'}}>
+            <h3><i className="material-icons" style={{ marginRight: '8px', verticalAlign: 'middle' }}>check</i> It's sealed! See you in the future?</h3>
+            <button className="btn" type="button" onClick={() => this.reset()}>
+              <i className="material-icons" style={{ marginRight: '8px', verticalAlign: 'middle' }}>clear</i>Start Over
+            </button>
+          </div> : null}
         </div>
         <div className="container">
           <h2 style={{ textAlign: 'center', margin: '16px 0' }}>FAQ</h2>

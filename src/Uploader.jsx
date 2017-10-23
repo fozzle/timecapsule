@@ -23,6 +23,7 @@ export default class Uploader extends React.Component {
   async uploadVideo() {
     // Set uploading state
     this.setState({ uploading: true });
+    this.props.onUploadingStateChange('uploading');
     const { email, sendAt } = this.state;
     const initiateFetchOptions = {
       method: 'POST',
@@ -52,7 +53,7 @@ export default class Uploader extends React.Component {
       console.error('Error', err);
     }
 
-    this.setState({ uploading: false });
+    this.props.onUploadingStateChange('uploaded');
   }
 
   render() {
@@ -64,7 +65,7 @@ export default class Uploader extends React.Component {
       <div style={{ background: 'white', padding: '16px', borderRadius: '4px', width: '100%' }}>
         <h3>Seal Away Your Capsule!</h3>
         <div>
-          <p>Just fill out these two fields to send away your time capsule, or hit "Start Over" to clear the video and start anew.</p>
+          <p>Just fill out these two fields to seal away your time capsule, or hit "Start Over" to clear the video and start anew.</p>
           <form>
             <fieldset>
               <div className="form-group">
