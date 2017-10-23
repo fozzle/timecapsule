@@ -48,8 +48,25 @@ exports.unlockAndSendCapsules = function(event, callback) {
     .filter('sendAt', '<=', new Date());
 
   datastore.runQuery(query)
-    .then((data) => {
-      console.log('data found', data);
+    .then(([data, meta]) => {
+      // All capsules to be sent undergo same 3 step process
+      const promises = data.map((capsule) => {
+        // Unlock the associated file for access.
+        const file = bucket.file(capsule.filename);
+        return file.makePublic()
+          .then(() => {
+            // Send email to owner.
+
+          })
+          .then(() => {
+            // Mark as sent.
+
+          })
+      });
+
+      return Promise.all(promises);
+    })
+    .then(() => {
       callback();
     })
     .catch((err) => {
