@@ -61,10 +61,10 @@ export default class Uploader extends React.Component {
     const date = String(now.getUTCDate()).padStart(2, '0');
     const minSend = `${now.getUTCFullYear()}-${month}-${date}`
     return (
-      <div style={{ background: 'white', padding: '16px', borderRadius: '4px' }}>
-        <h3>Seal the Deal!</h3>
+      <div style={{ background: 'white', padding: '16px', borderRadius: '4px', width: '100%' }}>
+        <h3>Seal Away Your Capsule!</h3>
         <div>
-          <p>Just fill out these two fields to send away your time capsule, or hit reset to clear the video and start over.</p>
+          <p>Just fill out these two fields to send away your time capsule, or hit "Start Over" to clear the video and start anew.</p>
           <form>
             <fieldset>
               <div className="form-group">
@@ -85,6 +85,7 @@ export default class Uploader extends React.Component {
                   id="sendAt"
                   label="Send on Date"
                   type="date"
+                  min={minSend}
                   placeholder="MM-DD-YYYY"
                   value={this.state.sendAt}
                   onChange={(e) => this.setState({ sendAt: e.target.value })}
@@ -92,7 +93,7 @@ export default class Uploader extends React.Component {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <button className="btn" type="button" disabled={this.state.uploading} onClick={() => this.props.onResetClick()}>
-                  <i className="material-icons" style={{ marginRight: '8px', verticalAlign: 'middle' }}>clear</i>Reset
+                  <i className="material-icons" style={{ marginRight: '8px', verticalAlign: 'middle' }}>clear</i>Start Over
                 </button>
                 <button className={`btn btn-primary ${this.state.uploading ? 'loading' : ''}`} type="button" onClick={() => this.uploadVideo()} disabled={!this.isValid() || this.state.uploading}>
                   <i className="material-icons" style={{ marginRight: '8px', verticalAlign: 'middle' }}>cloud_upload</i>Upload

@@ -1,18 +1,29 @@
 import React from 'react';
 import Recorder from './Recorder';
+import Uploader from './Uploader';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { recordedVideo: null, uploading: false };
+    this.state = { recordedData: null, uploading: false };
   }
+
+  reset() {
+    this.setState({ recordedData: null, uploading: false });
+  }
+
   render() {
     return (
       <div id="timecapsule">
         <h1 style={{ textAlign: 'center', margin: '16px 0' }} component="h1">Video Timecapsule</h1>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-          <Recorder onRecordingStateChange={(recordedVideo) => this.setState({ recordedVideo })} />
+          <Recorder recordedData={this.state.recordedData} onRecordingStateChange={(recordedData) => this.setState({ recordedData })} />
+          {this.state.recordedData ? <Uploader
+            onResetClick={() => this.reset()}
+            recordedVideo={this.state.recordedData}
+            onUploadingStateChange={(uploading) => this.setState({ uploading })}
+          /> : null}
         </div>
         <div className="container">
           <h2 style={{ textAlign: 'center', margin: '16px 0' }}>FAQ</h2>
@@ -26,7 +37,7 @@ export default class App extends React.Component {
             <div className="column col-md-12">
               <h3>Why?</h3>
               <p>To put it succinctly: I just think the "timecapsule" concept is pretty fun!</p>
-              <p>When I was in highschool I wrote a letter during freshman year to be opened on graduation. Forgetting about it and reading it 4 years later, it was a trip to see what had changed in my life, what hadn't changed in my life, and the all the changes that had happened in the years between.</p>
+              <p>When I was in highschool I wrote a letter during freshman year to be opened on graduation. Forgetting about it and reading it 4 years later, it was a trip to see what was important to me back then, what had changed, what hadn't...</p>
               <p>Since then I've journaled in the form of writing to myself. I will often forget about these musings and find them years later. They are always a joy to re-read (and terribly embarassing, but in an endearing way I think).</p>
               <p>I thought it would be fun to move this accidental timecapsule behavior to an easy to use website. A way to quickly record a message to myself on a whim and have it removed from my grasp until some set time in the future. By putting in the cloud, the hope is that it will be resilient to failures, drive wipes, over-zealous disk cleanup, planned obscelecence, or whatever other ravages of time we subject our data to.</p>
             </div>
