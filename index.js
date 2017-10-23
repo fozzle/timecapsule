@@ -50,8 +50,12 @@ exports.unlockAndSendCapsules = function(event, callback) {
   datastore.runQuery(query)
     .then((data) => {
       console.log('data found', data);
+      callback();
     })
-    .catch((err) => console.error('ERROR:', err));
+    .catch((err) => {
+      console.error('ERROR:', err)
+      callback(err);
+    });
 }
 
 exports.getSignedURL = function(req, res) {
