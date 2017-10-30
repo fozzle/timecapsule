@@ -84,7 +84,9 @@ exports.unlockAndSendCapsules = function(event, callback) {
               })
               .then(() => {
                 // Mark as sent.
-                console.log('I need to update', data);
+                console.log('I need to update', Object.keys(data));
+                console.log('key where are u', data.__key__);
+                console.log('key are u here friend', data.KEY);
               });
           });
 
