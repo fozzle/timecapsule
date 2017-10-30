@@ -128,7 +128,7 @@ exports.cleanTimecapsules = function(event, callback) {
     .filter('sendAt', '<=', deletionDate);
 
   return datastore.runQuery(query)
-    .then([data, meta] => {
+    .then(([data, meta]) => {
       const promises = data.map((capsule) => {
         const file = bucket.file(capsule.filename);
         const capsuleKey = capsule[datastore.KEY];
