@@ -129,7 +129,7 @@ export default class Recorder extends React.Component {
           </button> : null}
         </div> : null}
         <video
-          style={{ maxHeight: '100%', maxWidth: '100%', width: '100vw', objectFit: 'initial' }}
+          style={{ maxHeight: '80vh', width: '100vw', maxWidth: '80vw', objectFit: 'initial' }}
           muted={!hasRecording || showOverlay}
           autoPlay
           loop={hasRecording}

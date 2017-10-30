@@ -1,6 +1,7 @@
 const storage = require('@google-cloud/storage')();
 const datastore = require('@google-cloud/datastore')();
 const runtimeConfig = require('cloud-functions-runtime-config');
+const moment = require('moment');
 const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const mailgun = require('mailgun-js');
@@ -73,12 +74,13 @@ exports.unlockAndSendCapsules = function unlockAndSendCapsules(event, callback) 
               .then(() => {
                 // Send email to owner.
                 const videoURL = `https://storage.googleapis.com/timecapsules/${capsule.filename}`;
+                const createdAtString = moment(capsule.createdAt).format('LL');
                 const email = {
                   from: 'Time Warden <me@samples.mailgun.org>',
                   to: capsule.email,
                   subject: 'Your Time Capsule Has Been Released from Stasis',
-                  text: unlockEmailTextTemplate(videoURL, capsule.createdAt),
-                  html: unlockEmailHTMLTemplate(videoURL, capsule.createdAt),
+                  text: unlockEmailTextTemplate(videoURL, createdAtString),
+                  html: unlockEmailHTMLTemplate(videoURL, createdAtString),
                 };
 
                 return new Promise((resolve, reject) => {
