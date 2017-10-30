@@ -63,7 +63,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
   ])
     .then(([apiKey, domain]) => {
       const mailgunClient = mailgun({ apiKey, domain });
-      console.log('unpacked', apiKey, domain);
+
       return datastore.runQuery(query)
         .then(([data, meta]) => {
           // All capsules to be sent undergo same 3 step process
@@ -121,10 +121,34 @@ exports.unlockAndSendCapsules = function(event, callback) {
 
 exports.cleanTimecapsules = function(event, callback) {
   // Find timecapsules that have been sent, and have a sendAt over 30 days in the past.
+  const today = new Date();
+  const deletionDate = new Date(new Date().setDate(today.getDate() - 30));
+  const query = datastore.createQuery('Capsule')
+    .filter('sent', '=', true)
+    .filter('sendAt', '<=', deletionDate);
 
-  // Remove their files from storage
+  return datastore.runQuery(query)
+    .then([data, meta] => {
+      const promises = data.map((capsule) => {
+        const file = bucket.file(capsule.filename);
+        const capsuleKey = capsule[datastore.KEY];
+        // Delete them from the datastore
+        // Remove their files from storage
+        return Promise.all([
+          datastore.delete(capsuleKey),
+          file.delete(),
+        ]);
+      });
 
-  // Delete them from the datastore
+      return Promise.all(promises);
+    })
+    .then(() => {
+      callback();
+    })
+    .catch((err) => {
+      console.error('ERROR:', err);
+      callback(err);
+    });
 }
 
 exports.getSignedURL = function(req, res) {
