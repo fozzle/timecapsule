@@ -39,6 +39,10 @@ exports.createCapsule = function(event, callback) {
       {
         name: 'sent',
         value: false,
+      },
+      {
+        name: 'createdAt',
+        value: new Date(),
       }
     ]
   }
@@ -74,8 +78,8 @@ exports.unlockAndSendCapsules = function(event, callback) {
                   from: 'Time Warden <me@samples.mailgun.org>',
                   to: capsule.email,
                   subject: 'Your Time Capsule Has Been Released from Stasis',
-                  text: unlockEmailTextTemplate(videoURL, new Date()),
-                  html: unlockEmailHTMLTemplate(videoURL, new Date()),
+                  text: unlockEmailTextTemplate(videoURL, capsule.createdAt),
+                  html: unlockEmailHTMLTemplate(videoURL, capsule.createdAt),
                 };
 
                 return new Promise((resolve, reject) => {
