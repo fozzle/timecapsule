@@ -6,7 +6,6 @@ const mailgunDomain = runtimeConfig.getVariable('dev-config', 'mailgunDomain');
 const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
-const domain = 'sandbox6c951cc6aae54803a77ed5e1abb1ec65.mailgun.org'
 const mailgun = require('mailgun-js');
 
 // These are all google cloud functions. This repo sort of does double work. I'm not sorry.
@@ -84,7 +83,17 @@ exports.unlockAndSendCapsules = function(event, callback) {
               })
               .then(() => {
                 // Mark as sent.
-                console.log('capsule key', capsule[datastore.KEY]);
+                const capsuleKey = capsule[datastore.KEY]);
+                // This could be batched but for now...whatever lol
+                return datastore.update({
+                  key: capsuleKey,
+                  data: {
+                    email: capsule.email,
+                    filename: capsule.filename,
+                    sent: true,
+                    sendAt: capsule.sendAt,
+                  }
+                });
               });
           });
 
