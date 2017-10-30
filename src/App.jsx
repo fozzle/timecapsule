@@ -17,6 +17,10 @@ export default class App extends React.Component {
     return (
       <div id="timecapsule">
         <h1 style={{ textAlign: 'center', margin: '16px 0' }} component="h1">Video Timecapsule</h1>
+        {!window.MediaRecorder ?
+          <div className="toast toast-error m-2">
+            Sorry, your browser doesn&lsquote;t support video recording. Try using Firefox or Chrome.
+          </div> : null}
         <div style={{
             display: 'flex',
             justifyContent: 'center',
