@@ -76,7 +76,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
                 };
 
                 return new Promise((resolve, reject) => {
-                  mailgun.messages().send(email, (err, body) => {
+                  mailgunClient.messages().send(email, (err, body) => {
                     if (err) return reject(err);
                     return resolve(body);
                   })
