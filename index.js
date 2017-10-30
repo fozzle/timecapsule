@@ -7,6 +7,8 @@ const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
 const mailgun = require('mailgun-js');
+const unlockEmailHTMLTemplate = require('./unlockEmailHTMLTemplate');
+const unlockEmailTextTemplate = require('./unlockEmailTextTemplate');
 
 // These are all google cloud functions. This repo sort of does double work. I'm not sorry.
 exports.createCapsule = function(event, callback) {
@@ -67,11 +69,13 @@ exports.unlockAndSendCapsules = function(event, callback) {
             return file.makePublic()
               .then(() => {
                 // Send email to owner.
+                const videoURL = `https://storage.googleapis.com/timecapsules/${capsule.filename}`;
                 const email = {
                   from: 'Time Warden <me@samples.mailgun.org>',
                   to: capsule.email,
                   subject: 'Your Time Capsule Has Been Released from Stasis',
-                  text: `Check check check check it out! https://storage.googleapis.com/timecapsules/${capsule.filename}`,
+                  text: unlockEmailTextTemplate(videoURL, new Date()),
+                  html: unlockEmailHTMLTemplate(videoURL, new Date()),
                 };
 
                 return new Promise((resolve, reject) => {
