@@ -68,6 +68,9 @@ exports.unlockAndSendCapsules = function(event, callback) {
               text: `Check check check check it out! ${capsule.filename}`,
             };
 
+            console.log('We about to try and send an email', email);
+            console.log('Also here are the mailgun env vars', mailgunKey, mailgunDomain);
+
             return new Promise((resolve, reject) => {
               mailgun.messages().send(email, (err, body) => {
                 if (err) return reject(err);
