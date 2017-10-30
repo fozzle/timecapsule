@@ -64,7 +64,7 @@ export default class App extends React.Component {
             <div className="column col-md-12">
               <h3>Anything Else?</h3>
               <p>I will keep this up for a minimum of 5 years. Whether that will be extended will be determined by the project&lsquo;s usage.</p>
-              <p>Bug reports / feedback can go to <a href="https://github.com/fozzle/timecapsule/">Github</a> or <a href="https://twitter.com/xn9q8h">Twitter</a>.</p>
+              <p>Bug reports / feedback can go to <a href="https://github.com/fozzle/timecapsule/">Github</a>.</p>
               <p>Once a timecapsule is uploaded, it cannot be removed. If you can&lsquo;t bear to see it when it arrives I suggest trashing the email because then it will truly be lost.</p>
             </div>
           </div>
