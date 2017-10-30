@@ -1,20 +1,19 @@
 const storage = require('@google-cloud/storage')();
 const datastore = require('@google-cloud/datastore')();
 const runtimeConfig = require('cloud-functions-runtime-config');
-const mailgunKey = runtimeConfig.getVariable('dev-config', 'mailgunKey');
-const mailgunDomain = runtimeConfig.getVariable('dev-config', 'mailgunDomain');
 const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
-const bucket = storage.bucket('timecapsules');
 const mailgun = require('mailgun-js');
 const unlockEmailHTMLTemplate = require('./unlockEmailHTMLTemplate');
 const unlockEmailTextTemplate = require('./unlockEmailTextTemplate');
 
-// These are all google cloud functions. This repo sort of does double work. I'm not sorry.
-exports.createCapsule = function(event, callback) {
-  console.log('Processing file: ' + event.data.name);
-  console.log(event.data);
+const mailgunKey = runtimeConfig.getVariable('dev-config', 'mailgunKey');
+const mailgunDomain = runtimeConfig.getVariable('dev-config', 'mailgunDomain');
+const bucket = storage.bucket('timecapsules');
 
+
+// These are all google cloud functions. This repo sort of does double work. I'm not sorry.
+exports.createCapsule = function createCapsule(event, callback) {
   const file = event.data;
 
   // We will only respond to creation events.
@@ -43,16 +42,16 @@ exports.createCapsule = function(event, callback) {
       {
         name: 'createdAt',
         value: new Date(),
-      }
-    ]
-  }
+      },
+    ],
+  };
 
-  datastore.save(entity)
+  return datastore.save(entity)
     .then(() => callback())
-    .catch((err) => console.error('ERROR:', err));
+    .catch(err => console.error('ERROR:', err));
 };
 
-exports.unlockAndSendCapsules = function(event, callback) {
+exports.unlockAndSendCapsules = function unlockAndSendCapsules(event, callback) {
   const query = datastore.createQuery('Capsule')
     .filter('sent', '=', false)
     .filter('sendAt', '<=', new Date());
@@ -65,7 +64,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
       const mailgunClient = mailgun({ apiKey, domain });
 
       return datastore.runQuery(query)
-        .then(([data, meta]) => {
+        .then(([data]) => {
           // All capsules to be sent undergo same 3 step process
           const promises = data.map((capsule) => {
             // Unlock the associated file for access.
@@ -86,7 +85,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
                   mailgunClient.messages().send(email, (err, body) => {
                     if (err) return reject(err);
                     return resolve(body);
-                  })
+                  });
                 });
               })
               .then(() => {
@@ -101,25 +100,24 @@ exports.unlockAndSendCapsules = function(event, callback) {
                     sent: true,
                     sendAt: capsule.sendAt,
                     createdAt: capsule.createdAt,
-                  }
+                  },
                 });
               });
           });
 
           return Promise.all(promises);
-        })
+        });
     })
     .then(() => {
       callback();
     })
     .catch((err) => {
-      console.error('ERROR:', err)
+      console.error('ERROR:', err);
       callback(err);
     });
+};
 
-}
-
-exports.cleanTimecapsules = function(event, callback) {
+exports.cleanTimecapsules = function cleanTimecapsules(event, callback) {
   // Find timecapsules that have been sent, and have a sendAt over 30 days in the past.
   const today = new Date();
   const deletionDate = new Date(new Date().setDate(today.getDate() - 30));
@@ -128,7 +126,7 @@ exports.cleanTimecapsules = function(event, callback) {
     .filter('sendAt', '<=', deletionDate);
 
   return datastore.runQuery(query)
-    .then(([data, meta]) => {
+    .then(([data]) => {
       const promises = data.map((capsule) => {
         const file = bucket.file(capsule.filename);
         const capsuleKey = capsule[datastore.KEY];
@@ -149,9 +147,9 @@ exports.cleanTimecapsules = function(event, callback) {
       console.error('ERROR:', err);
       callback(err);
     });
-}
+};
 
-exports.getSignedURL = function(req, res) {
+exports.getSignedURL = function getSignedURL(req, res) {
   cors(req, res, () => {
     // TODO: dont make the filename predictable
     const file = bucket.file(`${uuid()}.webm`);
@@ -163,8 +161,8 @@ exports.getSignedURL = function(req, res) {
           email: req.body.email,
         },
         contentType: 'video/webm',
-      }
+      },
     })
-      .then((data) => res.send({ putURL: data[0] }));
+      .then(data => res.send({ putURL: data[0] }));
   });
-}
+};
