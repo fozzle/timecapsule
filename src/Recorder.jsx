@@ -1,7 +1,8 @@
 import 'webrtc-adapter';
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class Recorder extends React.Component {
+class Recorder extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,7 +30,7 @@ export default class Recorder extends React.Component {
       console.error('Error fetching streams', e);
     }
 
-    this.setState({ stream, streamSrc: window.URL.createObjectURL(stream) });
+    this.setState({ streamSrc: window.URL.createObjectURL(stream) });
 
     return stream;
   }
@@ -37,7 +38,6 @@ export default class Recorder extends React.Component {
   async initMediaRecorder() {
     const stream = await this.getMedia();
 
-    console.log('got stream', stream);
     this.mediaRecorder = new MediaRecorder(stream);
 
     this.mediaRecorder.addEventListener('dataavailable', (e) => {
@@ -77,57 +77,61 @@ export default class Recorder extends React.Component {
         onMouseEnter={() => this.setState({ hovered: true })}
         onMouseLeave={() => this.setState({ hovered: false })}
       >
-        {showOverlay ? <div
-          style={{
-            position: 'absolute',
-            background: 'rgba(0,0,0,0.4)',
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-          }}
-        >
-          {/* Initial recording toggle */}
-          {!hasRecording && !this.state.recording ? <button
-            className="button button-clear"
+        {showOverlay ?
+          <div
             style={{
-              color: 'white',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              width: '100%',
-              height: '100%',
-              cursor: 'pointer',
+              position: 'absolute',
+              background: 'rgba(0,0,0,0.4)',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1,
             }}
-            onClick={() => this.toggleRecording()}
           >
-            <div>
-              <i className="material-icons md-48">videocam</i>
-            </div>
-            Lookin' good? Click to start recording.
-          </button> : null}
-          {/* During recording toggle */}
-          {this.state.recording ? <button
-            className="button button-clear"
-            style={{
-              color: 'white',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              width: '100%',
-              height: '100%',
-              cursor: 'pointer',
-            }}
-            onClick={() => this.toggleRecording()}
-          >
-            <div>
-              <i className="material-icons md-48">stop</i>
-            </div>
-            Stop Recording
-          </button> : null}
-        </div> : null}
+            {/* Initial recording toggle */}
+            {!hasRecording && !this.state.recording ?
+              <button
+                className="button button-clear"
+                style={{
+                  color: 'white',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  width: '100%',
+                  height: '100%',
+                  cursor: 'pointer',
+                }}
+                onClick={() => this.toggleRecording()}
+              >
+                <div>
+                  <i className="material-icons md-48">videocam</i>
+                </div>
+                Lookin&lsquo; good? Click to start recording.
+              </button> : null}
+            {/* During recording toggle */}
+            {this.state.recording ?
+              <button
+                className="button button-clear"
+                style={{
+                  color: 'white',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  width: '100%',
+                  height: '100%',
+                  cursor: 'pointer',
+                }}
+                onClick={() => this.toggleRecording()}
+              >
+                <div>
+                  <i className="material-icons md-48">stop</i>
+                </div>
+                Stop Recording
+              </button> : null}
+          </div> : null}
+        {/* eslint-disable */}
         <video
           style={{ maxHeight: '80vh', width: '100vw', maxWidth: '80vw', objectFit: 'initial' }}
           muted={!hasRecording || showOverlay}
@@ -136,7 +140,15 @@ export default class Recorder extends React.Component {
           ref={x => (this.video = x)}
           src={this.state.recordedVideo || this.state.streamSrc}
         />
+        {/* eslint-enable */}
       </div>
     );
   }
 }
+
+Recorder.propTypes = {
+  onRecordingStateChange: PropTypes.func.isRequired,
+  recordedData: PropTypes.object, //eslint-disable-line
+};
+
+export default Recorder;

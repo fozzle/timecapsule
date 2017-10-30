@@ -1,16 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const API_URL = 'https://us-central1-timecapsule-174619.cloudfunctions.net/getSignedURL';
-export default class Uploader extends React.Component {
+class Uploader extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: '',
       sendAt: '',
-      valid: false,
       uploading: false,
-    }
+    };
   }
 
   isValid() {
@@ -29,11 +29,11 @@ export default class Uploader extends React.Component {
       method: 'POST',
       body: JSON.stringify({
         email,
-        sendAt
+        sendAt,
       }),
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     };
 
     const putFetchOptions = {
@@ -48,7 +48,7 @@ export default class Uploader extends React.Component {
     try {
       const urlResp = await fetch(API_URL, initiateFetchOptions);
       const { putURL } = await urlResp.json();
-      const putResp = await fetch(putURL, putFetchOptions);
+      await fetch(putURL, putFetchOptions);
     } catch (err) {
       console.error('Error', err);
     }
@@ -60,37 +60,47 @@ export default class Uploader extends React.Component {
     const now = new Date();
     const month = String(now.getUTCMonth() + 1).padStart(2, '0');
     const date = String(now.getUTCDate()).padStart(2, '0');
-    const minSend = `${now.getUTCFullYear()}-${month}-${date}`
+    const minSend = `${now.getUTCFullYear()}-${month}-${date}`;
     return (
-      <div style={{ background: 'white', padding: '16px', borderRadius: '4px', width: '100%' }}>
+      <div style={{
+          background: 'white',
+          padding: '16px',
+          borderRadius: '4px',
+          width: '100%',
+        }}
+      >
         <h3>Seal Away Your Capsule!</h3>
         <div>
-          <p>Just fill out these two fields to seal away your time capsule, or hit "Start Over" to clear the video and start anew.</p>
+          <p>Just fill out these two fields to seal away your time capsule, or hit &ldquo;Start Over&rdquo; to clear the video and start anew.</p>
           <form>
             <fieldset>
               <div className="form-group">
-                <label htmlFor="email" className="form-label">Email</label>
-                <input
-                  className="form-input"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={(e) => this.setState({ email: e.target.value })}
-                />
+                <label htmlFor="email" className="form-label">
+                  Email
+                  <input
+                    className="form-input"
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    value={this.state.email}
+                    onChange={e => this.setState({ email: e.target.value })}
+                  />
+                </label>
               </div>
               <div className="form-group">
-                <label htmlFor="sendAt" className="form-label">Send on Date</label>
-                <input
-                  className="form-input"
-                  id="sendAt"
-                  label="Send on Date"
-                  type="date"
-                  min={minSend}
-                  placeholder="MM-DD-YYYY"
-                  value={this.state.sendAt}
-                  onChange={(e) => this.setState({ sendAt: e.target.value })}
-                />
+                <label htmlFor="sendAt" className="form-label">
+                  Send on Date
+                  <input
+                    className="form-input"
+                    id="sendAt"
+                    label="Send on Date"
+                    type="date"
+                    min={minSend}
+                    placeholder="MM-DD-YYYY"
+                    value={this.state.sendAt}
+                    onChange={e => this.setState({ sendAt: e.target.value })}
+                  />
+                </label>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <button className="btn" type="button" disabled={this.state.uploading} onClick={() => this.props.onResetClick()}>
@@ -107,3 +117,17 @@ export default class Uploader extends React.Component {
     );
   }
 }
+
+Uploader.propTypes = {
+  onResetClick: PropTypes.func.isRequired,
+  onUploadingStateChange: PropTypes.func.isRequired,
+  recordedVideo: PropTypes.shape({
+    size: PropTypes.number,
+  }),
+};
+
+Uploader.defaultProps = {
+  recordedVideo: null,
+};
+
+export default Uploader;
