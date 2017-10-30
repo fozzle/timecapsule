@@ -18,8 +18,8 @@ exports.createCapsule = function(event, callback) {
   const file = event.data;
 
   // We will only respond to creation events.
-  if (file.metageneration !== '1' && file.resourceState !== 'exists') return callback();
-  console.log('we are past the early exit', file);
+  if (file.metageneration !== '1' || file.resourceState !== 'exists') return callback();
+
   const capsuleKey = datastore.key('Capsule');
   const entity = {
     key: capsuleKey,
