@@ -83,7 +83,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
               })
               .then(() => {
                 // Mark as sent.
-                const capsuleKey = capsule[datastore.KEY]);
+                const capsuleKey = capsule[datastore.KEY];
                 // This could be batched but for now...whatever lol
                 return datastore.update({
                   key: capsuleKey,
@@ -108,6 +108,14 @@ exports.unlockAndSendCapsules = function(event, callback) {
       callback(err);
     });
 
+}
+
+exports.cleanTimecapsules = function(event, callback) {
+  // Find timecapsules that have been sent, and have a sendAt over 30 days in the past.
+
+  // Remove their files from storage
+
+  // Delete them from the datastore
 }
 
 exports.getSignedURL = function(req, res) {
