@@ -7,7 +7,7 @@ const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
 const domain = 'sandbox6c951cc6aae54803a77ed5e1abb1ec65.mailgun.org'
-const mailgun = require('mailgun-js')({ apiKey: mailgunKey, domain: mailgunDomain });
+const mailgun = require('mailgun-js');
 
 // These are all google cloud functions. This repo sort of does double work. I'm not sorry.
 exports.createCapsule = function(event, callback) {
@@ -52,39 +52,44 @@ exports.unlockAndSendCapsules = function(event, callback) {
     .filter('sent', '=', false)
     .filter('sendAt', '<=', new Date());
 
-  datastore.runQuery(query)
-    .then(([data, meta]) => {
-      // All capsules to be sent undergo same 3 step process
-      const promises = data.map((capsule) => {
-        // Unlock the associated file for access.
-        const file = bucket.file(capsule.filename);
-        return file.makePublic()
-          .then(() => {
-            // Send email to owner.
-            const email = {
-              from: 'Time Warden <me@samples.mailgun.org>',
-              to: capsule.email,
-              subject: 'Your Time Capsule Has Been Released from Stasis',
-              text: `Check check check check it out! ${capsule.filename}`,
-            };
+  Promise.all([
+    mailgunKey,
+    mailgunDomain,
+  ])
+    .then(([apiKey, domain]) => {
+      const mailgunClient = mailgun({ apiKey, domain });
+      console.log('unpacked', apiKey, domain);
+      return datastore.runQuery(query)
+        .then(([data, meta]) => {
+          // All capsules to be sent undergo same 3 step process
+          const promises = data.map((capsule) => {
+            // Unlock the associated file for access.
+            const file = bucket.file(capsule.filename);
+            return file.makePublic()
+              .then(() => {
+                // Send email to owner.
+                const email = {
+                  from: 'Time Warden <me@samples.mailgun.org>',
+                  to: capsule.email,
+                  subject: 'Your Time Capsule Has Been Released from Stasis',
+                  text: `Check check check check it out! https://storage.googleapis.com/timecapsules/${capsule.filename}`,
+                };
 
-            console.log('We about to try and send an email', email);
-            console.log('Also here are the mailgun env vars', mailgunKey, mailgunDomain);
-
-            return new Promise((resolve, reject) => {
-              mailgun.messages().send(email, (err, body) => {
-                if (err) return reject(err);
-                return resolve(body);
+                return new Promise((resolve, reject) => {
+                  mailgun.messages().send(email, (err, body) => {
+                    if (err) return reject(err);
+                    return resolve(body);
+                  })
+                });
               })
-            });
-          })
-          .then(() => {
-            // Mark as sent.
-            console.log('I need to update', data);
+              .then(() => {
+                // Mark as sent.
+                console.log('I need to update', data);
+              });
           });
-      });
 
-      return Promise.all(promises);
+          return Promise.all(promises);
+        })
     })
     .then(() => {
       callback();
@@ -93,6 +98,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
       console.error('ERROR:', err)
       callback(err);
     });
+
 }
 
 exports.getSignedURL = function(req, res) {
