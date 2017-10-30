@@ -1,8 +1,13 @@
 const storage = require('@google-cloud/storage')();
 const datastore = require('@google-cloud/datastore')();
+const runtimeConfig = require('cloud-functions-runtime-config');
+const mailgunKey = runtimeConfig.getVariable('dev-config', 'mailgunKey');
+const mailgunDomain = runtimeConfig.getVariable('dev-config', 'mailgunDomain');
 const cors = require('cors')({ origin: true });
 const uuid = require('uuid/v4');
 const bucket = storage.bucket('timecapsules');
+const domain = 'sandbox6c951cc6aae54803a77ed5e1abb1ec65.mailgun.org'
+const mailgun = require('mailgun-js')({ apiKey: mailgunKey, domain: mailgunDomain });
 
 // These are all google cloud functions. This repo sort of does double work. I'm not sorry.
 exports.createCapsule = function(event, callback) {
@@ -56,12 +61,24 @@ exports.unlockAndSendCapsules = function(event, callback) {
         return file.makePublic()
           .then(() => {
             // Send email to owner.
+            const email = {
+              from: 'Time Warden <me@samples.mailgun.org>',
+              to: capsule.email,
+              subject: 'Your Time Capsule Has Been Released from Stasis',
+              text: `Check check check check it out! ${capsule.filename}`,
+            };
 
+            return new Promise((resolve, reject) => {
+              mailgun.messages().send(email, (err, body) => {
+                if (err) return reject(err);
+                return resolve(body);
+              })
+            });
           })
           .then(() => {
             // Mark as sent.
-
-          })
+            console.log('I need to update', data);
+          });
       });
 
       return Promise.all(promises);
