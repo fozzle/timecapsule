@@ -100,6 +100,7 @@ exports.unlockAndSendCapsules = function(event, callback) {
                     filename: capsule.filename,
                     sent: true,
                     sendAt: capsule.sendAt,
+                    createdAt: capsule.createdAt,
                   }
                 });
               });
