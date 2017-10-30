@@ -77,30 +77,30 @@ class Uploader extends React.Component {
               <div className="form-group">
                 <label htmlFor="email" className="form-label">
                   Email
-                  <input
-                    className="form-input"
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChange={e => this.setState({ email: e.target.value })}
-                  />
                 </label>
+                <input
+                  className="form-input"
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChange={e => this.setState({ email: e.target.value })}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="sendAt" className="form-label">
                   Send on Date
-                  <input
-                    className="form-input"
-                    id="sendAt"
-                    label="Send on Date"
-                    type="date"
-                    min={minSend}
-                    placeholder="MM-DD-YYYY"
-                    value={this.state.sendAt}
-                    onChange={e => this.setState({ sendAt: e.target.value })}
-                  />
                 </label>
+                <input
+                  className="form-input"
+                  id="sendAt"
+                  label="Send on Date"
+                  type="date"
+                  min={minSend}
+                  placeholder="MM-DD-YYYY"
+                  value={this.state.sendAt}
+                  onChange={e => this.setState({ sendAt: e.target.value })}
+                />
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <button className="btn" type="button" disabled={this.state.uploading} onClick={() => this.props.onResetClick()}>

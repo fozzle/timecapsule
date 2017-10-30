@@ -25,7 +25,7 @@ class Recorder extends React.Component {
   async getMedia() {
     let stream;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: { width: 1280, height: 720 } });
     } catch (e) {
       console.error('Error fetching streams', e);
     }
