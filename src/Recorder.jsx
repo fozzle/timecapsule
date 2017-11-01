@@ -38,7 +38,7 @@ class Recorder extends React.Component {
   async initMediaRecorder() {
     const stream = await this.getMedia();
 
-    this.mediaRecorder = new MediaRecorder(stream);
+    this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264,opus' });
 
     this.mediaRecorder.addEventListener('dataavailable', (e) => {
       this.chunks.push(e.data);

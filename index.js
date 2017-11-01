@@ -1,5 +1,7 @@
 const storage = require('@google-cloud/storage')();
 const datastore = require('@google-cloud/datastore')();
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
 const runtimeConfig = require('cloud-functions-runtime-config');
 const moment = require('moment');
 const cors = require('cors')({ origin: true });
@@ -11,9 +13,63 @@ const unlockEmailTextTemplate = require('./unlockEmailTextTemplate');
 const mailgunKey = runtimeConfig.getVariable('dev-config', 'mailgunKey');
 const mailgunDomain = runtimeConfig.getVariable('dev-config', 'mailgunDomain');
 const bucket = storage.bucket('timecapsules');
+const tempBucket = storage.bucket('timecapsules-temp');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 
 // These are all google cloud functions. This repo sort of does double work. I'm not sorry.
+
+// Upon upload to bucket, transcode and transmux video for universal playback
+exports.transcodeCapsule = function transcodeCapsule(event, callback) {
+  const file = event.data;
+
+  if (file.metageneration !== '1' || file.resourceState !== 'exists') {
+    callback();
+    return;
+  }
+
+  // Transcode and transmux to mp4 h264/aac incoming video should be h264 so we can copy codec
+
+  // Transfer file to new bucket, preserve metadata on file for datastore construction
+  const remoteWriteStream = bucket.file(file.name.replace('.webm', '.mp4')).createWriteStream();
+  const remoteReadStream = tempBucket.file(file.name).createReadStream();
+
+  ffmpeg()
+    .input(remoteReadStream)
+    .outputOptions('-c:v copy')
+    .outputOptions('-c:a aac')
+    .outputOptions('-b:a 160k')
+    .outputOptions('-f mp4')
+    .outputOptions('-preset fast')
+    .on('start', (cmdLine) => {
+      console.log('Started ffmpeg with command:', cmdLine);
+    })
+    .on('end', () => {
+      console.log('Successfully re-encoded video.');
+      // Set the metadata of the file on completion.
+      const transcodedFile = bucket.file(file.name.replace('.webm', '.mp4'));
+
+      transcodedFile.setMetadata({
+        metadata: file.metadata,
+      })
+        .then(() => callback())
+        .catch((err) => {
+          console.error('Error setting metadata', err);
+          callback(err);
+        });
+
+      // TODO: Delete previous file
+    })
+    .on('error', (err, stdout, stderr) => {
+      console.error('An error occured during encoding', err.message);
+      console.error('stdout:', stdout);
+      console.error('stderr:', stderr);
+      callback(err);
+    })
+    .pipe(remoteWriteStream, { end: true });
+};
+
+// After transcoding is complete, create datastore entry for future querying
 exports.createCapsule = function createCapsule(event, callback) {
   const file = event.data;
 
@@ -153,8 +209,7 @@ exports.cleanTimecapsules = function cleanTimecapsules(event, callback) {
 
 exports.getSignedURL = function getSignedURL(req, res) {
   cors(req, res, () => {
-    // TODO: dont make the filename predictable
-    const file = bucket.file(`${uuid()}.webm`);
+    const file = tempBucket.file(`${uuid()}.webm`);
     file.createResumableUpload({
       origin: req.headers.origin,
       metadata: {
