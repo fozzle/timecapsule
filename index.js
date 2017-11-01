@@ -41,6 +41,7 @@ exports.transcodeCapsule = function transcodeCapsule(event, callback) {
     .outputOptions('-b:a 160k')
     .outputOptions('-f mp4')
     .outputOptions('-preset fast')
+    .outputOptions('-movflags frag_keyframe+empty_moov')
     .on('start', (cmdLine) => {
       console.log('Started ffmpeg with command:', cmdLine);
     })
