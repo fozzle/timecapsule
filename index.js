@@ -31,7 +31,13 @@ exports.transcodeCapsule = function transcodeCapsule(event, callback) {
   // Transcode and transmux to mp4 h264/aac incoming video should be h264 so we can copy codec
 
   // Transfer file to new bucket, preserve metadata on file for datastore construction
-  const remoteWriteStream = bucket.file(file.name.replace('.webm', '.mp4')).createWriteStream();
+  const remoteWriteStream = bucket.file(file.name.replace('.webm', '.mp4'))
+    .createWriteStream({
+      metadata: {
+        metadata: file.metadata,
+        contentType: 'video/mp4',
+      },
+    });
   const remoteReadStream = tempBucket.file(file.name).createReadStream();
 
   ffmpeg()
@@ -47,20 +53,7 @@ exports.transcodeCapsule = function transcodeCapsule(event, callback) {
     })
     .on('end', () => {
       console.log('Successfully re-encoded video.');
-      // Set the metadata of the file on completion.
-      const transcodedFile = bucket.file(file.name.replace('.webm', '.mp4'));
-
-      transcodedFile.setMetadata({
-        metadata: file.metadata,
-        contentType: 'video/mp4',
-      })
-        .then(() => callback())
-        .catch((err) => {
-          console.error('Error setting metadata', err);
-          callback(err);
-        });
-
-      // TODO: Delete previous file
+      callback();
     })
     .on('error', (err, stdout, stderr) => {
       console.error('An error occured during encoding', err.message);
