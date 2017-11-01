@@ -52,6 +52,7 @@ exports.transcodeCapsule = function transcodeCapsule(event, callback) {
 
       transcodedFile.setMetadata({
         metadata: file.metadata,
+        contentType: 'video/mp4',
       })
         .then(() => callback())
         .catch((err) => {
