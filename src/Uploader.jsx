@@ -69,7 +69,7 @@ class Uploader extends React.Component {
           width: '100%',
         }}
       >
-        <h3>Seal Away Your Capsule!</h3>
+        <h3 className="text-center">Seal Away Your Capsule!</h3>
         <div>
           <p>Just fill out these two fields to seal away your time capsule, or hit &ldquo;Start Over&rdquo; to clear the video and start anew.</p>
           <form>
