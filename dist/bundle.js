@@ -774,7 +774,7 @@ if (__webpack_require__(6)) {
   var createArrayIncludes = __webpack_require__(56);
   var speciesConstructor = __webpack_require__(63);
   var ArrayIterators = __webpack_require__(93);
-  var Iterators = __webpack_require__(48);
+  var Iterators = __webpack_require__(49);
   var $iterDetect = __webpack_require__(60);
   var setSpecies = __webpack_require__(40);
   var arrayFill = __webpack_require__(92);
@@ -1590,6 +1590,21 @@ module.exports = function (target, src, safe) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(345);
+} else {
+  module.exports = __webpack_require__(346);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1646,7 +1661,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1850,7 +1865,7 @@ module.exports = {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(7).f;
@@ -1863,7 +1878,7 @@ module.exports = function (it, tag, stat) {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -1899,14 +1914,14 @@ module.exports = exporter;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = {};
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4);
@@ -1915,21 +1930,6 @@ module.exports = function (it, TYPE) {
   return it;
 };
 
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(345);
-} else {
-  module.exports = __webpack_require__(346);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ }),
 /* 51 */
@@ -2263,7 +2263,7 @@ var anInstance = __webpack_require__(41);
 var isObject = __webpack_require__(4);
 var fails = __webpack_require__(3);
 var $iterDetect = __webpack_require__(60);
-var setToStringTag = __webpack_require__(46);
+var setToStringTag = __webpack_require__(47);
 var inheritIfRequired = __webpack_require__(79);
 
 module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
@@ -2754,9 +2754,9 @@ var $export = __webpack_require__(0);
 var redefine = __webpack_require__(13);
 var hide = __webpack_require__(12);
 var has = __webpack_require__(11);
-var Iterators = __webpack_require__(48);
+var Iterators = __webpack_require__(49);
 var $iterCreate = __webpack_require__(85);
-var setToStringTag = __webpack_require__(46);
+var setToStringTag = __webpack_require__(47);
 var getPrototypeOf = __webpack_require__(17);
 var ITERATOR = __webpack_require__(5)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -2828,7 +2828,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 var create = __webpack_require__(38);
 var descriptor = __webpack_require__(33);
-var setToStringTag = __webpack_require__(46);
+var setToStringTag = __webpack_require__(47);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -2877,7 +2877,7 @@ module.exports = function (KEY) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(48);
+var Iterators = __webpack_require__(49);
 var ITERATOR = __webpack_require__(5)('iterator');
 var ArrayProto = Array.prototype;
 
@@ -2907,7 +2907,7 @@ module.exports = function (object, index, value) {
 
 var classof = __webpack_require__(53);
 var ITERATOR = __webpack_require__(5)('iterator');
-var Iterators = __webpack_require__(48);
+var Iterators = __webpack_require__(49);
 module.exports = __webpack_require__(22).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -2957,7 +2957,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 
 var addToUnscopables = __webpack_require__(31);
 var step = __webpack_require__(119);
-var Iterators = __webpack_require__(48);
+var Iterators = __webpack_require__(49);
 var toIObject = __webpack_require__(15);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -3199,7 +3199,7 @@ var toIndex = __webpack_require__(128);
 var gOPN = __webpack_require__(39).f;
 var dP = __webpack_require__(7).f;
 var arrayFill = __webpack_require__(92);
-var setToStringTag = __webpack_require__(46);
+var setToStringTag = __webpack_require__(47);
 var ARRAY_BUFFER = 'ArrayBuffer';
 var DATA_VIEW = 'DataView';
 var PROTOTYPE = 'prototype';
@@ -3477,7 +3477,7 @@ exports[DATA_VIEW] = $DataView;
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(44);
+  var invariant = __webpack_require__(45);
   var warning = __webpack_require__(70);
   var ReactPropTypesSecret = __webpack_require__(99);
   var loggedTypeFailures = {};
@@ -3805,7 +3805,7 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseInt = __webpack_require__(2).parseInt;
-var $trim = __webpack_require__(47).trim;
+var $trim = __webpack_require__(48).trim;
 var ws = __webpack_require__(78);
 var hex = /^[-+]?0[xX]/;
 
@@ -3820,7 +3820,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseFloat = __webpack_require__(2).parseFloat;
-var $trim = __webpack_require__(47).trim;
+var $trim = __webpack_require__(48).trim;
 
 module.exports = 1 / $parseFloat(__webpack_require__(78) + '-0') !== -Infinity ? function parseFloat(str) {
   var string = $trim(String(str), 3);
@@ -4034,7 +4034,7 @@ module.exports = function (C, x) {
 "use strict";
 
 var strong = __webpack_require__(124);
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var MAP = 'Map';
 
 // 23.1 Map Objects
@@ -4070,7 +4070,7 @@ var step = __webpack_require__(119);
 var setSpecies = __webpack_require__(40);
 var DESCRIPTORS = __webpack_require__(6);
 var fastKey = __webpack_require__(30).fastKey;
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var SIZE = DESCRIPTORS ? '_s' : 'size';
 
 var getEntry = function (that, key) {
@@ -4211,7 +4211,7 @@ module.exports = {
 "use strict";
 
 var strong = __webpack_require__(124);
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var SET = 'Set';
 
 // 23.2 Set Objects
@@ -4238,7 +4238,7 @@ var assign = __webpack_require__(107);
 var weak = __webpack_require__(127);
 var isObject = __webpack_require__(4);
 var fails = __webpack_require__(3);
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var WEAK_MAP = 'WeakMap';
 var getWeak = meta.getWeak;
 var isExtensible = Object.isExtensible;
@@ -4305,7 +4305,7 @@ var anInstance = __webpack_require__(41);
 var forOf = __webpack_require__(42);
 var createArrayMethod = __webpack_require__(27);
 var $has = __webpack_require__(11);
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var arrayFind = createArrayMethod(5);
 var arrayFindIndex = createArrayMethod(6);
 var id = 0;
@@ -5085,7 +5085,7 @@ var redefine = __webpack_require__(13);
 var META = __webpack_require__(30).KEY;
 var $fails = __webpack_require__(3);
 var shared = __webpack_require__(55);
-var setToStringTag = __webpack_require__(46);
+var setToStringTag = __webpack_require__(47);
 var uid = __webpack_require__(34);
 var wks = __webpack_require__(5);
 var wksExt = __webpack_require__(103);
@@ -5644,7 +5644,7 @@ var fails = __webpack_require__(3);
 var gOPN = __webpack_require__(39).f;
 var gOPD = __webpack_require__(16).f;
 var dP = __webpack_require__(7).f;
-var $trim = __webpack_require__(47).trim;
+var $trim = __webpack_require__(48).trim;
 var NUMBER = 'Number';
 var $Number = global[NUMBER];
 var Base = $Number;
@@ -6293,7 +6293,7 @@ $export($export.S, 'String', {
 "use strict";
 
 // 21.1.3.25 String.prototype.trim()
-__webpack_require__(47)('trim', function ($trim) {
+__webpack_require__(48)('trim', function ($trim) {
   return function trim() {
     return $trim(this, 3);
   };
@@ -7588,7 +7588,7 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(46)($Promise, PROMISE);
+__webpack_require__(47)($Promise, PROMISE);
 __webpack_require__(40)(PROMISE);
 Wrapper = __webpack_require__(22)[PROMISE];
 
@@ -7661,7 +7661,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(60)(function
 "use strict";
 
 var weak = __webpack_require__(127);
-var validate = __webpack_require__(49);
+var validate = __webpack_require__(50);
 var WEAK_SET = 'WeakSet';
 
 // 23.4 WeakSet Objects
@@ -8305,7 +8305,7 @@ $export($export.P, 'String', {
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(47)('trimLeft', function ($trim) {
+__webpack_require__(48)('trimLeft', function ($trim) {
   return function trimLeft() {
     return $trim(this, 1);
   };
@@ -8319,7 +8319,7 @@ __webpack_require__(47)('trimLeft', function ($trim) {
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(47)('trimRight', function ($trim) {
+__webpack_require__(48)('trimRight', function ($trim) {
   return function trimRight() {
     return $trim(this, 2);
   };
@@ -9310,7 +9310,7 @@ var getKeys = __webpack_require__(36);
 var redefine = __webpack_require__(13);
 var global = __webpack_require__(2);
 var hide = __webpack_require__(12);
-var Iterators = __webpack_require__(48);
+var Iterators = __webpack_require__(49);
 var wks = __webpack_require__(5);
 var ITERATOR = wks('iterator');
 var TO_STRING_TAG = wks('toStringTag');
@@ -10148,7 +10148,7 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-var _react = __webpack_require__(50);
+var _react = __webpack_require__(44);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -10180,7 +10180,7 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), do
  This source code is licensed under the MIT license found in the
  LICENSE file in the root directory of this source tree.
 */
-var f=__webpack_require__(54),p=__webpack_require__(69);__webpack_require__(44);var r=__webpack_require__(32);
+var f=__webpack_require__(54),p=__webpack_require__(69);__webpack_require__(45);var r=__webpack_require__(32);
 function t(a){for(var b=arguments.length-1,d="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,e=0;e<b;e++)d+="\x26args[]\x3d"+encodeURIComponent(arguments[e+1]);b=Error(d+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var u={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function v(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}v.prototype.isReactComponent={};v.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?t("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};v.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function w(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}function x(){}x.prototype=v.prototype;var y=w.prototype=new x;y.constructor=w;f(y,v.prototype);y.isPureReactComponent=!0;function z(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}var A=z.prototype=new x;A.constructor=z;f(A,v.prototype);A.unstable_isAsyncReactComponent=!0;A.render=function(){return this.props.children};
@@ -10220,7 +10220,7 @@ if (process.env.NODE_ENV !== "production") {
 var objectAssign$1 = __webpack_require__(54);
 var require$$0 = __webpack_require__(70);
 var emptyObject = __webpack_require__(69);
-var invariant = __webpack_require__(44);
+var invariant = __webpack_require__(45);
 var emptyFunction = __webpack_require__(32);
 var checkPropTypes = __webpack_require__(98);
 
@@ -11963,7 +11963,7 @@ if (process.env.NODE_ENV === 'production') {
  LICENSE file in the root directory of this source tree.
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(50);__webpack_require__(44);var l=__webpack_require__(100),n=__webpack_require__(54),ba=__webpack_require__(136),ca=__webpack_require__(32),da=__webpack_require__(69),ea=__webpack_require__(137),fa=__webpack_require__(138),ha=__webpack_require__(139),ia=__webpack_require__(140);
+var aa=__webpack_require__(44);__webpack_require__(45);var l=__webpack_require__(100),n=__webpack_require__(54),ba=__webpack_require__(136),ca=__webpack_require__(32),da=__webpack_require__(69),ea=__webpack_require__(137),fa=__webpack_require__(138),ha=__webpack_require__(139),ia=__webpack_require__(140);
 function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
 function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
 var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -12288,8 +12288,8 @@ if (process.env.NODE_ENV !== "production") {
 
 'use strict';
 
-var react = __webpack_require__(50);
-var invariant = __webpack_require__(44);
+var react = __webpack_require__(44);
+var invariant = __webpack_require__(45);
 var ExecutionEnvironment = __webpack_require__(100);
 var _assign = __webpack_require__(54);
 var EventListener = __webpack_require__(136);
@@ -29730,7 +29730,7 @@ module.exports = performance || {};
 
 
 var emptyFunction = __webpack_require__(32);
-var invariant = __webpack_require__(44);
+var invariant = __webpack_require__(45);
 var warning = __webpack_require__(70);
 var assign = __webpack_require__(54);
 
@@ -30280,7 +30280,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 var emptyFunction = __webpack_require__(32);
-var invariant = __webpack_require__(44);
+var invariant = __webpack_require__(45);
 var ReactPropTypesSecret = __webpack_require__(99);
 
 module.exports = function() {
@@ -30343,7 +30343,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(50);
+var _react = __webpack_require__(44);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -30351,7 +30351,7 @@ var _Recorder = __webpack_require__(361);
 
 var _Recorder2 = _interopRequireDefault(_Recorder);
 
-var _Uploader = __webpack_require__(373);
+var _Uploader = __webpack_require__(374);
 
 var _Uploader2 = _interopRequireDefault(_Uploader);
 
@@ -30371,7 +30371,11 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = { recordedData: null, uploading: false };
+    _this.state = {
+      recordedData: null,
+      uploading: false,
+      recorderVisible: false
+    };
     return _this;
   }
 
@@ -30385,13 +30389,25 @@ var App = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      var showRecorderButton = _react2.default.createElement(
+        'button',
+        { className: 'btn btn-lg', onClick: function onClick() {
+            return _this2.setState({ recorderVisible: true });
+          } },
+        _react2.default.createElement(
+          'i',
+          { className: 'material-icons mr-2', style: { verticalAlign: 'bottom' } },
+          'perm_camera_mic'
+        ),
+        'Start'
+      );
       return _react2.default.createElement(
         'div',
         { id: 'timecapsule' },
         _react2.default.createElement(
           'h1',
-          { style: { textAlign: 'center', margin: '16px 0' }, component: 'h1' },
-          'Video Timecapsule'
+          { style: { margin: '16px 0' }, className: 'text-center', component: 'h1' },
+          'Timelock Video'
         ),
         !window.MediaRecorder ? _react2.default.createElement(
           'div',
@@ -30407,12 +30423,12 @@ var App = function (_React$Component) {
               flexDirection: 'column'
             }
           },
-          _react2.default.createElement(_Recorder2.default, {
+          this.state.recorderVisible ? _react2.default.createElement(_Recorder2.default, {
             recordedData: this.state.recordedData,
             onRecordingStateChange: function onRecordingStateChange(recordedData) {
               return _this2.setState({ recordedData: recordedData });
             }
-          }),
+          }) : showRecorderButton,
           this.state.recordedData && this.state.uploading !== 'uploaded' ? _react2.default.createElement(_Uploader2.default, {
             onResetClick: function onResetClick() {
               return _this2.reset();
@@ -30454,8 +30470,8 @@ var App = function (_React$Component) {
           { className: 'container' },
           _react2.default.createElement(
             'h2',
-            { style: { textAlign: 'center', margin: '16px 0' } },
-            'FAQ'
+            { className: 'text-center', style: { margin: '16px 0' } },
+            'Send a Video To Your Future Self'
           ),
           _react2.default.createElement(
             'div',
@@ -30464,34 +30480,61 @@ var App = function (_React$Component) {
               'div',
               { className: 'column col-md-12' },
               _react2.default.createElement(
-                'h3',
-                null,
-                'How?'
+                'h4',
+                { className: 'text-center' },
+                'Step 1'
               ),
               _react2.default.createElement(
                 'p',
-                null,
-                'After granting camera and microphone permissions to the website, click on the video to start recording. Click on the video again to stop recording. You will then be able to choose to redo or upload.'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                'Your recorded video is then uploaded to the cloud and cannot be viewed until the date you specify (and even then, only via a specific link that cannot be guessed by anyone else).'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                'On the date you specify, the video will be \u201Cunlocked\u201D and viewable for 30 days. You will receive an email with a link to watch the video, and of course download it too.'
+                { className: 'h5' },
+                'After allowing us access to your camera, record the video.'
               )
             ),
             _react2.default.createElement(
               'div',
               { className: 'column col-md-12' },
               _react2.default.createElement(
-                'h3',
-                null,
-                'Why?'
+                'h4',
+                { className: 'text-center' },
+                'Step 2'
               ),
+              _react2.default.createElement(
+                'p',
+                { className: 'h5' },
+                'Review the recording, or don\u2018t. :) In any case, fill out your email and a date in the future to send'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'column col-md-12' },
+              _react2.default.createElement(
+                'h4',
+                { className: 'text-center' },
+                'Step 3'
+              ),
+              _react2.default.createElement(
+                'p',
+                { className: 'h5' },
+                'Wait! Your video will be inaccessible until the date you specified. Upon which you\u2018ll receive an email to view or download it.'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'h2',
+            { style: { textAlign: 'center', margin: '16px 0' } },
+            'FAQ'
+          ),
+          _react2.default.createElement(
+            'dl',
+            null,
+            _react2.default.createElement(
+              'dt',
+              null,
+              'Why?'
+            ),
+            _react2.default.createElement(
+              'dd',
+              null,
               _react2.default.createElement(
                 'p',
                 null,
@@ -30514,18 +30557,41 @@ var App = function (_React$Component) {
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'column col-md-12' },
-              _react2.default.createElement(
-                'h3',
-                null,
-                'Anything Else?'
-              ),
+              'dt',
+              null,
+              'How far in the future can I set the date?'
+            ),
+            _react2.default.createElement(
+              'dd',
+              null,
               _react2.default.createElement(
                 'p',
                 null,
-                'I will keep this up for a minimum of 5 years. Whether that will be extended will be determined by the project\u2018s usage.'
-              ),
+                'I vow to keep this up for a minimum of 5 years. Whether that will be extended will be determined by the project\u2018s usage.'
+              )
+            ),
+            _react2.default.createElement(
+              'dt',
+              null,
+              'Can I delete a previously recorded timecapsule?'
+            ),
+            _react2.default.createElement(
+              'dd',
+              null,
+              _react2.default.createElement(
+                'p',
+                null,
+                'Once a timecapsule is uploaded, it cannot be removed. If you can\u2018t bear to see it when it arrives I suggest trashing the email because then it will truly be lost.'
+              )
+            ),
+            _react2.default.createElement(
+              'dt',
+              null,
+              'I found a bug?'
+            ),
+            _react2.default.createElement(
+              'dd',
+              null,
               _react2.default.createElement(
                 'p',
                 null,
@@ -30536,11 +30602,6 @@ var App = function (_React$Component) {
                   'Github'
                 ),
                 '.'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                'Once a timecapsule is uploaded, it cannot be removed. If you can\u2018t bear to see it when it arrives I suggest trashing the email because then it will truly be lost.'
               )
             )
           )
@@ -30569,13 +30630,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(362);
 
-var _react = __webpack_require__(50);
+var _react = __webpack_require__(44);
 
 var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(101);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactCircularProgressbar = __webpack_require__(373);
+
+var _reactCircularProgressbar2 = _interopRequireDefault(_reactCircularProgressbar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30586,6 +30651,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MAX_DURATION_MS = 1000 * 60 * 10; // 10 minutes
 
 var Recorder = function (_React$Component) {
   _inherits(Recorder, _React$Component);
@@ -30599,6 +30666,8 @@ var Recorder = function (_React$Component) {
       recording: false,
       recordedVideo: null
     };
+
+    _this.recordingAnimationFrame = _this.recordingAnimationFrame.bind(_this);
     return _this;
   }
 
@@ -30677,7 +30746,7 @@ var Recorder = function (_React$Component) {
                 stream = _context2.sent;
 
 
-                this.mediaRecorder = new MediaRecorder(stream);
+                this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=h264,opus' });
 
                 this.mediaRecorder.addEventListener('dataavailable', function (e) {
                   _this2.chunks.push(e.data);
@@ -30703,7 +30772,9 @@ var Recorder = function (_React$Component) {
       if (!this.state.recording) {
         this.chunks = [];
         this.mediaRecorder.start(10);
+        this.recordStart = Date.now();
         this.setState({ recording: true });
+        requestAnimationFrame(this.recordingAnimationFrame);
         if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(null);
       } else {
         this.mediaRecorder.stop();
@@ -30715,105 +30786,68 @@ var Recorder = function (_React$Component) {
       }
     }
   }, {
+    key: 'recordingAnimationFrame',
+    value: function recordingAnimationFrame() {
+      var elapsed = Date.now() - this.recordStart;
+      this.setState({ completionPercent: elapsed / MAX_DURATION_MS });
+      if (this.state.recording) requestAnimationFrame(this.recordingAnimationFrame);
+      // Can use this to stop recording as well
+      if (elapsed / MAX_DURATION_MS > 1) this.toggleRecording();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
 
       var hasRecording = Boolean(this.props.recordedData);
-
-      /* Overlay shown:
-        1.) Initial load (not recording, no data)
-        2.) hover while recording
-      */
-      var showOverlay = !hasRecording && !this.state.recording || !hasRecording && this.state.hovered;
       return _react2.default.createElement(
         'div',
         {
           className: 'recorder',
-          style: { position: 'relative' },
-          onMouseEnter: function onMouseEnter() {
-            return _this3.setState({ hovered: true });
-          },
-          onMouseLeave: function onMouseLeave() {
-            return _this3.setState({ hovered: false });
-          }
+          style: { position: 'relative' }
         },
-        showOverlay ? _react2.default.createElement(
-          'div',
+        !hasRecording ? _react2.default.createElement(
+          'button',
           {
+            className: 'button-clear',
             style: {
               position: 'absolute',
-              background: 'rgba(0,0,0,0.4)',
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 1
+              bottom: '5%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 1,
+              width: '8vw',
+              maxWidth: '100px',
+              height: '8vw',
+              maxHeight: '100px'
+            },
+            onClick: function onClick() {
+              return _this3.toggleRecording();
             }
           },
-          !hasRecording && !this.state.recording ? _react2.default.createElement(
-            'button',
-            {
-              className: 'button button-clear',
-              style: {
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                width: '100%',
-                height: '100%',
-                cursor: 'pointer'
-              },
-              onClick: function onClick() {
-                return _this3.toggleRecording();
-              }
-            },
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(
-                'i',
-                { className: 'material-icons md-48' },
-                'videocam'
-              )
-            ),
-            'Lookin\u2018 good? Click to start recording.'
-          ) : null,
-          this.state.recording ? _react2.default.createElement(
-            'button',
-            {
-              className: 'button button-clear',
-              style: {
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                width: '100%',
-                height: '100%',
-                cursor: 'pointer'
-              },
-              onClick: function onClick() {
-                return _this3.toggleRecording();
-              }
-            },
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(
-                'i',
-                { className: 'material-icons md-48' },
-                'stop'
-              )
-            ),
-            'Stop Recording'
-          ) : null
+          _react2.default.createElement('div', { style: {
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+              width: this.state.recording ? '35%' : '40%',
+              height: this.state.recording ? '35%' : '40%',
+              background: this.state.recording ? 'gray' : 'red',
+              borderRadius: this.state.recording ? 0 : '100%'
+            }
+          }),
+          _react2.default.createElement(_reactCircularProgressbar2.default, {
+            className: this.state.recording ? 'progress-button-recording' : 'progress-button-record',
+            percentage: this.state.recording ? this.state.completionPercent * 100 : 0,
+            background: true
+          })
         ) : null,
         _react2.default.createElement('video', {
           style: { maxHeight: '80vh', width: '100vw', maxWidth: '80vw', objectFit: 'initial' },
-          muted: !hasRecording || showOverlay,
+          muted: !hasRecording,
           autoPlay: true,
-          loop: hasRecording,
+          controls: hasRecording,
           ref: function ref(x) {
             return _this3.video = x;
           },
@@ -30888,7 +30922,7 @@ module.exports = function(dependencies, opts) {
   }
 
   // Utils.
-  var utils = __webpack_require__(45);
+  var utils = __webpack_require__(46);
   var logging = utils.log;
   var browserDetails = utils.detectBrowser(window);
 
@@ -31003,7 +31037,7 @@ module.exports = function(dependencies, opts) {
  */
  /* eslint-env node */
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 var logging = utils.log;
 
 var chromeShim = {
@@ -31592,7 +31626,7 @@ module.exports = {
  */
  /* eslint-env node */
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 var logging = utils.log;
 
 // Expose public methods.
@@ -31835,7 +31869,7 @@ module.exports = function(window) {
  /* eslint-env node */
 
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 var shimRTCPeerConnection = __webpack_require__(367);
 
 module.exports = {
@@ -33999,7 +34033,7 @@ module.exports = function(window) {
  /* eslint-env node */
 
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 
 var firefoxShim = {
   shimOnTrack: function(window) {
@@ -34204,7 +34238,7 @@ module.exports = {
  /* eslint-env node */
 
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 var logging = utils.log;
 
 // Expose public methods.
@@ -34418,7 +34452,7 @@ module.exports = function(window) {
  *  tree.
  */
 
-var utils = __webpack_require__(45);
+var utils = __webpack_require__(46);
 
 var safariShim = {
   // TODO: DrAlex, should be here, double check against LayoutTests
@@ -34667,6 +34701,12 @@ module.exports = {
 /* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
+!function(e,t){ true?module.exports=t(__webpack_require__(44)):"function"==typeof define&&define.amd?define(["react"],t):"object"==typeof exports?exports.CircularProgressbar=t(require("react")):e.CircularProgressbar=t(e.React)}(this,function(e){return function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var r={};return t.m=e,t.c=r,t.i=function(e){return e},t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=7)}([function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function i(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),s=r(6),c=n(s),l=r(4),p=n(l),f=function(e){function t(e){o(this,t);var r=a(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return r.state={percentage:e.initialAnimation?0:e.percentage},r}return i(t,e),u(t,[{key:"componentDidMount",value:function(){var e=this;this.props.initialAnimation&&(this.initialTimeout=setTimeout(function(){e.requestAnimationFrame=window.requestAnimationFrame(function(){e.setState({percentage:e.props.percentage})})},0))}},{key:"componentWillReceiveProps",value:function(e){this.setState({percentage:e.percentage})}},{key:"componentWillUnmount",value:function(){clearTimeout(this.initialTimeout),window.cancelAnimationFrame(this.requestAnimationFrame)}},{key:"getBackgroundPadding",value:function(){return this.props.background?null==this.props.backgroundPadding?this.props.strokeWidth:this.props.backgroundPadding:0}},{key:"getPathDescription",value:function(){var e=this.getPathRadius();return"\n      M 50,50 m 0,-"+e+"\n      a "+e+","+e+" 0 1 1 0,"+2*e+"\n      a "+e+","+e+" 0 1 1 0,-"+2*e+"\n    "}},{key:"getProgressStyle",value:function(){var e=2*Math.PI*this.getPathRadius();return{strokeDasharray:e+"px "+e+"px",strokeDashoffset:(100-Math.min(Math.max(this.state.percentage,0),100))/100*e+"px"}}},{key:"getPathRadius",value:function(){return 50-this.props.strokeWidth/2-this.getBackgroundPadding()}},{key:"render",value:function(){var e=this.props,t=e.percentage,r=e.textForPercentage,n=e.className,o=e.classes,a=e.strokeWidth,i=this.props.classForPercentage?this.props.classForPercentage(t):"",u=this.getPathDescription(),s=r?r(t):null;return c.default.createElement("svg",{className:o.root+" "+n+" "+i,viewBox:"0 0 100 100"},this.props.background?c.default.createElement("circle",{className:o.background,cx:50,cy:50,r:50}):null,c.default.createElement("path",{className:o.trail,d:u,strokeWidth:a,fillOpacity:0}),c.default.createElement("path",{className:o.path,d:u,strokeWidth:a,fillOpacity:0,style:this.getProgressStyle()}),s?c.default.createElement("text",{className:o.text,x:50,y:50},s):null)}}]),t}(c.default.Component);f.propTypes={percentage:p.default.number.isRequired,className:p.default.string,classes:p.default.objectOf(p.default.string),strokeWidth:p.default.number,background:p.default.bool,backgroundPadding:p.default.number,initialAnimation:p.default.bool,classForPercentage:p.default.func,textForPercentage:p.default.func},f.defaultProps={strokeWidth:8,className:"",classes:{root:"CircularProgressbar",trail:"CircularProgressbar-trail",path:"CircularProgressbar-path",text:"CircularProgressbar-text",background:"CircularProgressbar-background"},background:!1,backgroundPadding:null,initialAnimation:!1,textForPercentage:function(e){return e+"%"}},t.default=f},function(e,t,r){"use strict";function n(e){return function(){return e}}var o=function(){};o.thatReturns=n,o.thatReturnsFalse=n(!1),o.thatReturnsTrue=n(!0),o.thatReturnsNull=n(null),o.thatReturnsThis=function(){return this},o.thatReturnsArgument=function(e){return e},e.exports=o},function(e,t,r){"use strict";function n(e,t,r,n,a,i,u,s){if(o(t),!e){var c;if(void 0===t)c=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var l=[r,n,a,i,u,s],p=0;c=new Error(t.replace(/%s/g,function(){return l[p++]})),c.name="Invariant Violation"}throw c.framesToPop=1,c}}var o=function(e){};e.exports=n},function(e,t,r){"use strict";var n=r(1),o=r(2),a=r(5);e.exports=function(){function e(e,t,r,n,i,u){u!==a&&o(!1,"Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types")}function t(){return e}e.isRequired=e;var r={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t};return r.checkPropTypes=n,r.PropTypes=r,r}},function(e,t,r){e.exports=r(3)()},function(e,t,r){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},function(t,r){t.exports=e},function(e,t,r){e.exports=r(0)}])});
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -34676,7 +34716,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(50);
+var _react = __webpack_require__(44);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -34815,7 +34855,7 @@ var Uploader = function (_React$Component) {
         },
         _react2.default.createElement(
           'h3',
-          null,
+          { className: 'text-center' },
           'Seal Away Your Capsule!'
         ),
         _react2.default.createElement(
