@@ -18,10 +18,24 @@ export default class App extends React.Component {
   }
 
   render() {
-    const showRecorderButton = (
-      <button className="btn btn-lg" onClick={() => this.setState({ recorderVisible: true })}>
-        <i className="material-icons mr-2" style={{ verticalAlign: 'bottom' }}>perm_camera_mic</i>Start
-      </button>
+    const showRecorderDiv = (
+      <div
+        className="text-center"
+        style={{
+          border: '3px dashed gray',
+          color: 'gray',
+          width: '40vw',
+          padding: '16px',
+          borderRadius: '4px',
+        }}
+      >
+        <p>
+          We will need access to your camera and microphone.
+        </p>
+        <button className="btn btn-lg" onClick={() => this.setState({ recorderVisible: true })}>
+          <i className="material-icons mr-2" style={{ verticalAlign: 'bottom' }}>perm_camera_mic</i>Start
+        </button>
+      </div>
     );
     return (
       <div id="timecapsule">
@@ -40,7 +54,7 @@ export default class App extends React.Component {
           {this.state.recorderVisible ? <Recorder
             recordedData={this.state.recordedData}
             onRecordingStateChange={recordedData => this.setState({ recordedData })}
-          /> : showRecorderButton}
+          /> : showRecorderDiv}
           {this.state.recordedData && this.state.uploading !== 'uploaded' ? <Uploader
             onResetClick={() => this.reset()}
             recordedVideo={this.state.recordedData}
@@ -63,11 +77,11 @@ export default class App extends React.Component {
             </div>
             <div className="column col-md-12">
               <h4 className="text-center">Step 2</h4>
-              <p className="h5">Review the recording, or don&lsquo;t. :) In any case, fill out your email and a date in the future to send</p>
+              <p className="h5">Review the recording, or don&lsquo;t. :) In any case, fill out your email and a date in the future to send it.</p>
             </div>
             <div className="column col-md-12">
               <h4 className="text-center">Step 3</h4>
-              <p className="h5">Wait! Your video will be inaccessible until the date you specified. Upon which you&lsquo;ll receive an email to view or download it.</p>
+              <p className="h5">Wait! Your video will be inaccessible until the date you specified, upon which you&lsquo;ll receive an email.</p>
             </div>
           </div>
           <h2 style={{ textAlign: 'center', margin: '16px 0' }}>FAQ</h2>

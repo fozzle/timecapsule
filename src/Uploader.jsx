@@ -10,6 +10,7 @@ class Uploader extends React.Component {
       email: '',
       sendAt: '',
       uploading: false,
+      errors: {},
     };
   }
 
@@ -18,6 +19,19 @@ class Uploader extends React.Component {
     const valid = this.state.email.indexOf('@') !== -1 && new Date(this.state.sendAt) > new Date();
 
     return this.props.recordedVideo && valid;
+  }
+
+  validateForm() {
+    const errors = {};
+    if (this.state.email.indexOf('@') === -1) {
+      errors.email = 'Must be a valid email.';
+    }
+
+    if (new Date(this.state.sendAt) < new Date()) {
+      errors.sendAt = 'Must be a date in the future.';
+    }
+
+    this.setState({ errors });
   }
 
   async uploadVideo() {
@@ -75,7 +89,7 @@ class Uploader extends React.Component {
           <form>
             <fieldset>
               <div className="form-group">
-                <label htmlFor="email" className="form-label">
+                <label htmlFor="email" className={`form-group ${this.state.errors.email ? 'has-error' : ''}`}>
                   Email
                 </label>
                 <input
@@ -83,11 +97,13 @@ class Uploader extends React.Component {
                   id="email"
                   type="email"
                   placeholder="Email"
+                  onBlur={() => this.validateForm()}
                   value={this.state.email}
                   onChange={e => this.setState({ email: e.target.value })}
                 />
+                {this.state.errors.email ? <p className="form-input-hint">{this.state.errors.email}</p> : null}
               </div>
-              <div className="form-group">
+              <div className={`form-group ${this.state.errors.sendAt ? 'has-error' : ''}`}>
                 <label htmlFor="sendAt" className="form-label">
                   Send on Date
                 </label>
@@ -99,8 +115,10 @@ class Uploader extends React.Component {
                   min={minSend}
                   placeholder="MM-DD-YYYY"
                   value={this.state.sendAt}
+                  onBlur={() => this.validateForm()}
                   onChange={e => this.setState({ sendAt: e.target.value })}
                 />
+                {this.state.errors.sendAt ? <p className="form-input-hint">{this.state.errors.sendAt}</p> : null}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <button className="btn" type="button" disabled={this.state.uploading} onClick={() => this.props.onResetClick()}>

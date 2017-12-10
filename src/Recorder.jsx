@@ -94,9 +94,9 @@ class Recorder extends React.Component {
               transform: 'translateX(-50%)',
               zIndex: 1,
               width: '8vw',
-              maxWidth: '100px',
+              maxWidth: '80px',
               height: '8vw',
-              maxHeight: '100px',
+              maxHeight: '80px',
             }}
             onClick={() => this.toggleRecording()}
           >
