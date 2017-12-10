@@ -127,7 +127,7 @@ exports.unlockAndSendCapsules = function unlockAndSendCapsules(event, callback) 
                 const videoURL = `https://storage.googleapis.com/timecapsules/${capsule.filename}`;
                 const createdAtString = moment(capsule.createdAt).format('LL');
                 const email = {
-                  from: 'Time Warden <me@samples.mailgun.org>',
+                  from: 'Time Warden <timewarden@mailer.timelock.video>',
                   to: capsule.email,
                   subject: 'Your Time Capsule Has Been Released from Stasis',
                   text: unlockEmailTextTemplate(videoURL, createdAtString),

@@ -1,7 +1,10 @@
 import 'webrtc-adapter';
 import React from 'react';
 import PropTypes from 'prop-types';
+import CircularProgressbar from 'react-circular-progressbar';
 
+
+const MAX_DURATION_MS = 1000 * 60 * 10; // 10 minutes
 class Recorder extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +13,8 @@ class Recorder extends React.Component {
       recording: false,
       recordedVideo: null,
     };
+
+    this.recordingAnimationFrame = this.recordingAnimationFrame.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +54,9 @@ class Recorder extends React.Component {
     if (!this.state.recording) {
       this.chunks = [];
       this.mediaRecorder.start(10);
+      this.recordStart = Date.now();
       this.setState({ recording: true });
+      requestAnimationFrame(this.recordingAnimationFrame);
       if (this.props.onRecordingStateChange) this.props.onRecordingStateChange(null);
     } else {
       this.mediaRecorder.stop();
@@ -61,82 +68,62 @@ class Recorder extends React.Component {
     }
   }
 
+  recordingAnimationFrame() {
+    const elapsed = Date.now() - this.recordStart;
+    this.setState({ completionPercent: elapsed / MAX_DURATION_MS });
+    if (this.state.recording) requestAnimationFrame(this.recordingAnimationFrame);
+    // Can use this to stop recording as well
+    if ((elapsed / MAX_DURATION_MS) > 1) this.toggleRecording();
+  }
+
   render() {
     const hasRecording = Boolean(this.props.recordedData);
-
-    /* Overlay shown:
-      1.) Initial load (not recording, no data)
-      2.) hover while recording
-    */
-    const showOverlay = (!hasRecording && !this.state.recording) ||
-      (!hasRecording && this.state.hovered);
     return (
       <div
         className="recorder"
         style={{ position: 'relative' }}
-        onMouseEnter={() => this.setState({ hovered: true })}
-        onMouseLeave={() => this.setState({ hovered: false })}
       >
-        {showOverlay ?
-          <div
+        {/* recording toggle */}
+        {!hasRecording ?
+          <button
+            className="button-clear"
             style={{
               position: 'absolute',
-              background: 'rgba(0,0,0,0.4)',
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
+              bottom: '5%',
+              left: '50%',
+              transform: 'translateX(-50%)',
               zIndex: 1,
+              width: '8vw',
+              maxWidth: '100px',
+              height: '8vw',
+              maxHeight: '100px',
             }}
+            onClick={() => this.toggleRecording()}
           >
-            {/* Initial recording toggle */}
-            {!hasRecording && !this.state.recording ?
-              <button
-                className="button button-clear"
-                style={{
-                  color: 'white',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  width: '100%',
-                  height: '100%',
-                  cursor: 'pointer',
-                }}
-                onClick={() => this.toggleRecording()}
-              >
-                <div>
-                  <i className="material-icons md-48">videocam</i>
-                </div>
-                Lookin&lsquo; good? Click to start recording.
-              </button> : null}
-            {/* During recording toggle */}
-            {this.state.recording ?
-              <button
-                className="button button-clear"
-                style={{
-                  color: 'white',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  width: '100%',
-                  height: '100%',
-                  cursor: 'pointer',
-                }}
-                onClick={() => this.toggleRecording()}
-              >
-                <div>
-                  <i className="material-icons md-48">stop</i>
-                </div>
-                Stop Recording
-              </button> : null}
-          </div> : null}
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+              width: this.state.recording ? '35%' : '40%',
+              height: this.state.recording ? '35%' : '40%',
+              background: this.state.recording ? 'gray' : 'red',
+              borderRadius: this.state.recording ? 0 : '100%',
+              }}
+            />
+            <CircularProgressbar
+              className={this.state.recording ? 'progress-button-recording' : 'progress-button-record'}
+              percentage={this.state.recording ? this.state.completionPercent * 100 : 0}
+              background
+            />
+          </button> : null}
         {/* eslint-disable */}
         <video
           style={{ maxHeight: '80vh', width: '100vw', maxWidth: '80vw', objectFit: 'initial' }}
-          muted={!hasRecording || showOverlay}
+          muted={!hasRecording}
           autoPlay
-          loop={hasRecording}
+          controls={hasRecording}
           ref={x => (this.video = x)}
           src={this.state.recordedVideo || this.state.streamSrc}
         />
