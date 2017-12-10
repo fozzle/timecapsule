@@ -30389,17 +30389,35 @@ var App = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var showRecorderButton = _react2.default.createElement(
-        'button',
-        { className: 'btn btn-lg', onClick: function onClick() {
-            return _this2.setState({ recorderVisible: true });
-          } },
+      var showRecorderDiv = _react2.default.createElement(
+        'div',
+        {
+          className: 'text-center',
+          style: {
+            border: '3px dashed gray',
+            color: 'gray',
+            width: '40vw',
+            padding: '16px',
+            borderRadius: '4px'
+          }
+        },
         _react2.default.createElement(
-          'i',
-          { className: 'material-icons mr-2', style: { verticalAlign: 'bottom' } },
-          'perm_camera_mic'
+          'p',
+          null,
+          'We will need access to your camera and microphone.'
         ),
-        'Start'
+        _react2.default.createElement(
+          'button',
+          { className: 'btn btn-lg', onClick: function onClick() {
+              return _this2.setState({ recorderVisible: true });
+            } },
+          _react2.default.createElement(
+            'i',
+            { className: 'material-icons mr-2', style: { verticalAlign: 'bottom' } },
+            'perm_camera_mic'
+          ),
+          'Start'
+        )
       );
       return _react2.default.createElement(
         'div',
@@ -30428,7 +30446,7 @@ var App = function (_React$Component) {
             onRecordingStateChange: function onRecordingStateChange(recordedData) {
               return _this2.setState({ recordedData: recordedData });
             }
-          }) : showRecorderButton,
+          }) : showRecorderDiv,
           this.state.recordedData && this.state.uploading !== 'uploaded' ? _react2.default.createElement(_Uploader2.default, {
             onResetClick: function onResetClick() {
               return _this2.reset();
@@ -30501,7 +30519,7 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 'p',
                 { className: 'h5' },
-                'Review the recording, or don\u2018t. :) In any case, fill out your email and a date in the future to send'
+                'Review the recording, or don\u2018t. :) In any case, fill out your email and a date in the future to send it.'
               )
             ),
             _react2.default.createElement(
@@ -30515,7 +30533,7 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 'p',
                 { className: 'h5' },
-                'Wait! Your video will be inaccessible until the date you specified. Upon which you\u2018ll receive an email to view or download it.'
+                'Wait! Your video will be inaccessible until the date you specified, upon which you\u2018ll receive an email.'
               )
             )
           ),
@@ -30817,9 +30835,9 @@ var Recorder = function (_React$Component) {
               transform: 'translateX(-50%)',
               zIndex: 1,
               width: '8vw',
-              maxWidth: '100px',
+              maxWidth: '80px',
               height: '8vw',
-              maxHeight: '100px'
+              maxHeight: '80px'
             },
             onClick: function onClick() {
               return _this3.toggleRecording();
@@ -34747,7 +34765,8 @@ var Uploader = function (_React$Component) {
     _this.state = {
       email: '',
       sendAt: '',
-      uploading: false
+      uploading: false,
+      errors: {}
     };
     return _this;
   }
@@ -34759,6 +34778,20 @@ var Uploader = function (_React$Component) {
       var valid = this.state.email.indexOf('@') !== -1 && new Date(this.state.sendAt) > new Date();
 
       return this.props.recordedVideo && valid;
+    }
+  }, {
+    key: 'validateForm',
+    value: function validateForm() {
+      var errors = {};
+      if (this.state.email.indexOf('@') === -1) {
+        errors.email = 'Must be a valid email.';
+      }
+
+      if (new Date(this.state.sendAt) < new Date()) {
+        errors.sendAt = 'Must be a date in the future.';
+      }
+
+      this.setState({ errors: errors });
     }
   }, {
     key: 'uploadVideo',
@@ -34877,7 +34910,7 @@ var Uploader = function (_React$Component) {
                 { className: 'form-group' },
                 _react2.default.createElement(
                   'label',
-                  { htmlFor: 'email', className: 'form-label' },
+                  { htmlFor: 'email', className: 'form-group ' + (this.state.errors.email ? 'has-error' : '') },
                   'Email'
                 ),
                 _react2.default.createElement('input', {
@@ -34885,15 +34918,23 @@ var Uploader = function (_React$Component) {
                   id: 'email',
                   type: 'email',
                   placeholder: 'Email',
+                  onBlur: function onBlur() {
+                    return _this2.validateForm();
+                  },
                   value: this.state.email,
                   onChange: function onChange(e) {
                     return _this2.setState({ email: e.target.value });
                   }
-                })
+                }),
+                this.state.errors.email ? _react2.default.createElement(
+                  'p',
+                  { className: 'form-input-hint' },
+                  this.state.errors.email
+                ) : null
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'form-group' },
+                { className: 'form-group ' + (this.state.errors.sendAt ? 'has-error' : '') },
                 _react2.default.createElement(
                   'label',
                   { htmlFor: 'sendAt', className: 'form-label' },
@@ -34907,10 +34948,18 @@ var Uploader = function (_React$Component) {
                   min: minSend,
                   placeholder: 'MM-DD-YYYY',
                   value: this.state.sendAt,
+                  onBlur: function onBlur() {
+                    return _this2.validateForm();
+                  },
                   onChange: function onChange(e) {
                     return _this2.setState({ sendAt: e.target.value });
                   }
-                })
+                }),
+                this.state.errors.sendAt ? _react2.default.createElement(
+                  'p',
+                  { className: 'form-input-hint' },
+                  this.state.errors.sendAt
+                ) : null
               ),
               _react2.default.createElement(
                 'div',
