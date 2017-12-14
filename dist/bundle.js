@@ -30391,32 +30391,122 @@ var App = function (_React$Component) {
 
       var showRecorderDiv = _react2.default.createElement(
         'div',
-        {
-          className: 'text-center',
-          style: {
-            border: '3px dashed gray',
-            color: 'gray',
-            width: '40vw',
-            padding: '16px',
-            borderRadius: '4px'
-          }
-        },
+        { className: 'container' },
         _react2.default.createElement(
-          'p',
-          null,
-          'We will need access to your camera and microphone.'
+          'h3',
+          { className: 'text-center', style: { margin: '16px 0' } },
+          'Send a Video To Your Future Self'
         ),
         _react2.default.createElement(
-          'button',
-          { className: 'btn btn-lg', onClick: function onClick() {
-              return _this2.setState({ recorderVisible: true });
-            } },
+          'div',
+          { className: 'columns' },
           _react2.default.createElement(
-            'i',
-            { className: 'material-icons mr-2', style: { verticalAlign: 'bottom' } },
-            'perm_camera_mic'
+            'div',
+            { className: 'column col-md-12 text-center' },
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'i',
+                { className: 'material-icons md-48' },
+                'videocam'
+              )
+            ),
+            _react2.default.createElement(
+              'h4',
+              null,
+              'Step 1'
+            ),
+            _react2.default.createElement(
+              'p',
+              { className: 'h5' },
+              'Record your video.'
+            )
           ),
-          'Start'
+          _react2.default.createElement(
+            'div',
+            { className: 'column col-md-12 text-center' },
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'i',
+                { className: 'material-icons md-48' },
+                'create'
+              )
+            ),
+            _react2.default.createElement(
+              'h4',
+              { className: 'text-center' },
+              'Step 2'
+            ),
+            _react2.default.createElement(
+              'p',
+              { className: 'h5' },
+              'Fill out your email and a date in the future.'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column col-md-12 text-center' },
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'i',
+                { className: 'material-icons md-48' },
+                'schedule'
+              )
+            ),
+            _react2.default.createElement(
+              'h4',
+              null,
+              'Step 3'
+            ),
+            _react2.default.createElement(
+              'p',
+              { className: 'h5' },
+              'Wait! Your video will be emailed to you on the day you specified.'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'columns' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-12 column text-center' },
+            _react2.default.createElement(
+              'div',
+              {
+                style: {
+                  display: 'inline-block',
+                  border: '3px dashed gray',
+                  color: 'gray',
+                  width: '40vw',
+                  padding: '16px',
+                  borderRadius: '4px'
+                }
+              },
+              _react2.default.createElement(
+                'p',
+                null,
+                'We will need access to your camera and microphone.'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'btn btn-lg', onClick: function onClick() {
+                    return _this2.setState({ recorderVisible: true });
+                  } },
+                _react2.default.createElement(
+                  'i',
+                  { className: 'material-icons mr-2', style: { verticalAlign: 'bottom' } },
+                  'perm_camera_mic'
+                ),
+                'Start'
+              )
+            )
+          )
         )
       );
       return _react2.default.createElement(
@@ -30488,57 +30578,6 @@ var App = function (_React$Component) {
           { className: 'container' },
           _react2.default.createElement(
             'h2',
-            { className: 'text-center', style: { margin: '16px 0' } },
-            'Send a Video To Your Future Self'
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'columns' },
-            _react2.default.createElement(
-              'div',
-              { className: 'column col-md-12' },
-              _react2.default.createElement(
-                'h4',
-                { className: 'text-center' },
-                'Step 1'
-              ),
-              _react2.default.createElement(
-                'p',
-                { className: 'h5' },
-                'After allowing us access to your camera, record the video.'
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'column col-md-12' },
-              _react2.default.createElement(
-                'h4',
-                { className: 'text-center' },
-                'Step 2'
-              ),
-              _react2.default.createElement(
-                'p',
-                { className: 'h5' },
-                'Review the recording, or don\u2018t. :) In any case, fill out your email and a date in the future to send it.'
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'column col-md-12' },
-              _react2.default.createElement(
-                'h4',
-                { className: 'text-center' },
-                'Step 3'
-              ),
-              _react2.default.createElement(
-                'p',
-                { className: 'h5' },
-                'Wait! Your video will be inaccessible until the date you specified, upon which you\u2018ll receive an email.'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            'h2',
             { style: { textAlign: 'center', margin: '16px 0' } },
             'FAQ'
           ),
@@ -30556,22 +30595,17 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 'p',
                 null,
-                'I just think the \u201Ctimecapsule\u201D concept is pretty fun!'
+                'I just think the \u201Ctimecapsule\u201D concept is pretty fun! I will often forget about letters or journals I write and find them years later. They are always a joy to re-read (and terribly embarassing, but in an endearing way I think).'
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                'When I was in highschool I wrote a letter during freshman year to be opened on graduation. Forgetting about it and reading it 4 years later, it was a trip to see what was important to me back then, what had changed, what hadn\u2018t...'
+                'I thought it would be fun to move this accidental timecapsule behavior to an easy to use website. A way to quickly record a message to myself on a whim and have it removed from my grasp until some set time in the future.'
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                'Since then I\u2018ve journaled in the form of writing to myself. I will often forget about these musings and find them years later. They are always a joy to re-read (and terribly embarassing, but in an endearing way I think).'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                'I thought it would be fun to move this accidental timecapsule behavior to an easy to use website. A way to quickly record a message to myself on a whim and have it removed from my grasp until some set time in the future. By putting in the cloud, the hope is that it will be resilient to failures, drive wipes, over-zealous disk cleanup, planned obscelecence, or whatever other ravages of time we subject our data to.'
+                'By putting in the cloud, the hope is that it will be resilient to failures, drive wipes, over-zealous disk cleanup, planned obscelecence, or whatever other ravages of time we subject our data to.'
               )
             ),
             _react2.default.createElement(
@@ -30586,6 +30620,20 @@ var App = function (_React$Component) {
                 'p',
                 null,
                 'I vow to keep this up for a minimum of 5 years. Whether that will be extended will be determined by the project\u2018s usage.'
+              )
+            ),
+            _react2.default.createElement(
+              'dt',
+              null,
+              'How long are the videos stored?'
+            ),
+            _react2.default.createElement(
+              'dd',
+              null,
+              _react2.default.createElement(
+                'p',
+                null,
+                'Until 30 days after being sent, at which point they will be erased.'
               )
             ),
             _react2.default.createElement(
